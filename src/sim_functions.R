@@ -67,14 +67,14 @@ run_sim <- function(data_list, model, nchains, niter) {
   return(fit_stan_model)
 }
 
-create_histogram <- function(param, summarized_draws, true_params_list) {
-  plot <- summarized_draws |> 
-    filter(variable == param) |> 
-    ggplot(aes(x = mean)) + 
-    geom_histogram() +
-    geom_vline(xintercept = true_params_list[[param]],
-               linetype="dotted") +
-    ggtitle(param)
-  
-  return(plot)
-}
+#create_histogram <- function(param, summarized_draws, true_params_list) {
+#  plot <- summarized_draws |> 
+#    filter(variable == param) |> 
+#    ggplot(aes(x = mean)) + 
+#    geom_histogram() +
+#    geom_vline(xintercept = true_params_list[[param]],
+#               linetype="dotted") +
+#    ggtitle(param)
+#  
+#  return(plot)
+#}
