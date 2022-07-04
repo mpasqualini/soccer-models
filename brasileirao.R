@@ -18,4 +18,5 @@ brasileirao2019_list <- list(G = nrow(brasileirao2019),
 m1 <- stan_model(file = "models/modelo1-poisson-hierarchical.stan", model_name = "model1-hierarchical")
 m1_fit <- sampling(object = m1, data = brasileirao2019_list)
 
+y1_predict <- extract(m1_fit, pars = c("y1_tilde"))
 
