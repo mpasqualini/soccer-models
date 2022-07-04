@@ -1,3 +1,21 @@
+reindex_teams <- function(data) {
+  data_long <- melt(data, 
+                    measure.vars = c("home_team", "away_team"), 
+                    value.name = "team_index")
+  
+  unique_teams_original_id <- data_long[ , sort(unique(team_index))]
+  
+  teams_dict <- data.frame(team_original_id = unique_teams_original_id, team_id = 1:20)
+  
+  data[ , `:=` (home_team_index = match(data$home_team, 
+                                        teams_dict$team_original_id), 
+                away_team_index = match(data$away_team, 
+                                        teams_dict$team_original_id))
+  ]
+  
+  return(data)
+}
+
 get_team_points_per_game <- function(data) {
   game_points <- data |> 
     mutate(home_team_points = case_when(y1 > y2 ~ 3,

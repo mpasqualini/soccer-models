@@ -2,14 +2,15 @@ library(bayesplot)
 library(data.table)
 library(gridExtra)
 library(posterior)
+library(tictoc)
 library(tidyverse)
 library(rstan)
 
-source("src/funcoes.R")
+source("src/sim_functions.R")
 
 # Model 3: gamma1 = 1, gamma2 = 0 ----
 
-nreps <- 1
+nreps <- 1000
 true_params_bivariate_poisson <- list(run = 1:nreps,
                                       nt = 20,
                                       home = 0.13,
@@ -30,7 +31,10 @@ model3_generated_data <- lapply(model3_generated_data, append, n_teams_games)
 model3 <- stan_model(file = "models/modelo2-poisson-bivariate.stan",
                       model_name = "model3")
 
+tstart <- tic()
 model3_fit <- map(model3_generated_data, run_sim, model = model3, nchains = 1, niter = 5000)
+tend <- toc()
+
 saveRDS(model3_fit, file = "artifacts/model3-sim.rds")
 
 sum_draws <- map(model3_fit, summarize_draws) |> rbindlist()
