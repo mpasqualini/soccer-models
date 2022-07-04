@@ -2,7 +2,6 @@ library(bayesplot)
 library(data.table)
 library(gridExtra)
 library(posterior)
-library(progress)
 library(tidyverse)
 library(rstan)
 
