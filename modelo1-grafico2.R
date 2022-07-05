@@ -18,4 +18,4 @@ sigma_def <- 0.89
 
 simulated_data <- generate_hierarchical_poisson_model(nt, home, mu_att, mu_def, sigma_att, sigma_def)
 points_per_team <- get_team_points_per_game(simulated_data)
-create_cumsum_points(points_per_team)
+create_cumsum_points_plot(points_per_team)

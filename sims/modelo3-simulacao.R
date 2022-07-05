@@ -10,7 +10,7 @@ source("src/sim_functions.R")
 
 # Model 3: gamma1 = 1, gamma2 = 0 ----
 
-nreps <- 1000
+nreps <- 1
 true_params_bivariate_poisson <- list(run = 1:nreps,
                                       nt = 20,
                                       home = 0.13,
