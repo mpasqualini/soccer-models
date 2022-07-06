@@ -1,10 +1,13 @@
 create_cumsum_points_plot <- function(data) {
   plot <- data |> 
-    group_by(team_id) |> 
-    mutate(cumsum = cumsum(points_scored)) |> 
-    ggplot(aes(x = game_id, y = cumsum)) +
+    group_by(team_id, name) |>
+    arrange(game_id) |> 
+    mutate(cumsum = cumsum(value)) |> 
+    ggplot(aes(x = game_id, y = cumsum, color = name)) +
     geom_line() +
-    facet_wrap(~team_id)
+    facet_wrap(~team_id) +
+    labs(x="", y="") +
+    theme(legend.title=element_blank())
   
   return(plot)
 }
