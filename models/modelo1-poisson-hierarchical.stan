@@ -52,8 +52,14 @@ generated quantities {
   vector[G] y1_tilde;
   vector[G] y2_tilde;
   
+  real log_lik_y1 = 0;
+  real log_lik_y2 = 0;
+  
   for (g in 1:G) {
     y1_tilde[g] = poisson_log_rng(home + att[h[g]] + def[a[g]]);
     y2_tilde[g] = poisson_log_rng(att[a[g]] + def[h[g]]);
+    
+    log_lik_y1 = poisson_log_lpmf(y1[g] | home + att[h[g]] + def[a[g]]);
+    log_lik_y2 = poisson_log_lpmf(y2[g] | att[a[g]] + def[h[g]]);
   }
 }

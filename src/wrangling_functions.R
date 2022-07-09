@@ -16,14 +16,14 @@ reindex_teams <- function(data) {
   return(data)
 }
 
-get_team_points_per_game <- function(data) {
+get_team_points_per_game <- function(data, y1, y2) {
   game_points <- data |> 
-    mutate(home_team_points = case_when(y1 > y2 ~ 3,
-                                        y1 < y2 ~ 0,
-                                        y1 == y2 ~ 1), 
-           away_team_points = case_when(y2 > y1 ~ 3, 
-                                        y2 < y1 ~ 0,
-                                        y2 == y1 ~ 1
+    mutate(home_team_points = case_when(!!y1 > !!y2 ~ 3,
+                                        !!y1 < !!y2 ~ 0,
+                                        !!y1 == !!y2 ~ 1), 
+           away_team_points = case_when(!!y2 > !!y1 ~ 3, 
+                                        !!y2 < !!y1 ~ 0,
+                                        !!y2 == !!y1 ~ 1
            ))
   
   home <- game_points |> 
@@ -39,4 +39,10 @@ get_team_points_per_game <- function(data) {
     mutate(game_id = row_number())
   
   return(teams_points)
+}
+
+mse <- function(actual, predicted) {
+  mse <- mean((actual - predicted)^2)
+  
+  return(mse)
 }
