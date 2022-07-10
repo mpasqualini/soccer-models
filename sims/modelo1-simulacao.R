@@ -1,5 +1,5 @@
 library(bayesplot)
-mclibrary(data.table)
+library(data.table)
 library(gridExtra)
 library(posterior)
 library(tidyverse)

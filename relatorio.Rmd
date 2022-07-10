@@ -8,18 +8,21 @@ bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 
 library(kableExtra)
+library(knitr)
 library(tidyverse)
 ```
 
 # 1. Introdução 
 
+Modelos estatísticos podem ser aplicados em diferentes áreas do conhecimento. Uma delas, que tem crescido nos últimos anos, é a análise de dados de competições e eventos esportivos. O número de gols marcados, por exemplo, pode ser tratado como dados de contagem e representados por modelos discretos. Estes modelos são vastamente representados na literatura desde a década de 80, como em @pollard_69.9_1985 que utiliza a distribuição Binomial Negativa, enquanto @baxter_discriminating_1988 apresentam as diferenças entre a Binomial Negativa e Poisson para modelar o placar de partidas de futebol. Tais modelos desconsideram uma estrutura de correlação entre os gols de cada oponente. @karlis_analysis_2003 sugere a distribuição Poisson bivariada, que permite uma correlação entre o número de gols marcados pelo mandante e visitante e, ainda, há uma proposta de um modelo bayesiano hierárquico com efeitos aleatórios como definido por @baio_bayesian_2010. Neste trabalho, são implementados, ajustados e comparados modelos baseados na distribuição Poisson para dados do Campeonato Brasileiro de 2019, obtido em @dados_brasileirao utilizando o software Stan e Rstan para inferência bayesiana. 
+
 # 2. Modelos 
 ## Modelo 1
 
-[@baio_bayesian_2010] sugerem um modelo bayesiano hierárquico para os gols marcados na partida. No modelo proposto, o número de gols marcados segue uma distribuição Poisson condicionalmente independentes, em que a correlação é incluída por meio dos hiperparâmetros. A distribuição Poisson é vastamente utilizada para problemas de contagem e amplamente aplicada à análises esportivas como sugerem M. Dixon and S. Coles (2007) e D. Karlis and I. Ntzoufras (2003), dentre outros autores.
+@baio_bayesian_2010 sugerem um modelo bayesiano hierárquico para os gols marcados na partida. No modelo proposto, o número de gols marcados segue uma distribuição Poisson condicionalmente independentes, em que a correlação é incluída por meio dos hiperparâmetros. A distribuição Poisson é vastamente utilizada para problemas de contagem e amplamente aplicada à análises esportivas como sugerem M. Dixon and S. Coles (2007) e D. Karlis and I. Ntzoufras (2003), dentre outros autores.
 
 O vetor $\mathbf{y} = (y_{g1}, y_{g2})$ como um vetor de contagens, podemos tomar 
 
@@ -31,7 +34,9 @@ o vetor tendo uma distribuição Poisson condicional aos parâmetros $\mathbf{\t
 Assumindo um modelo log-linear de efeitos aleatórios, temos 
 
 $$
-\log \theta_{g1} = home + att_{h(g)} + def_{a(g)} \\
+\log \theta_{g1} = home + att_{h(g)} + def_{a(g)}
+$$
+$$
 \log \theta_{g2} = att_{a(g)} + def_{h(g)}
 $$
 
@@ -76,7 +81,7 @@ Tal restrição foi fundamental para que as cadeias de Markov convergissem, alé
 
 ### Simulação
 
-Para checar a implementação dos modelos e estimação correta dos parâmetros, foi feita uma simulação com 1000 réplicas de tamanho 380, que é o número de jogos de um campeonato com 20 times, com dados gerados a partir de parâmetros conhecidos. Os parâmetros do modelo usados para simulação são definidos como:
+Para checar a implementação dos modelos e estimação correta dos parâmetros, foi feita uma simulação com 1000 réplicas de tamanho 380, que é o número de jogos de um campeonato com 20 times. Os parâmetros do modelo usados para simulação são definidos como:
 
 - $home = 0.13$
 - $\mu_{att} = 0.05$
@@ -84,7 +89,7 @@ Para checar a implementação dos modelos e estimação correta dos parâmetros,
 - $\sigma_{att} = 0.56$
 - $\sigma_{def} = 0.52$
 
-![Simulação - Modelo 1](/home/mariana/Documents/pessoal/monografia/tcc/sim-modelo1-22-06.png)
+![Simulação - Modelo 1](artifacts/sim-modelo1-22-06.png)
 
 Observa-se que as distribuições dos parâmetros estão centradas em torno dos valores "reais". 
 
@@ -92,25 +97,37 @@ Observa-se que as distribuições dos parâmetros estão centradas em torno dos 
 
 As simulações foram realizadas com apenas 01 cadeia e 5000 interações. O gráfico traceplot mostra que a cadeia converge e consegue caminhar pelo espaço paramétrico.
 
-![Traceplot - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/model1-traceplot-sim.png)
+![Traceplot - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model1-traceplot-sim.png)
 Outra estatística útil é o $\hat{R}$, que próximo de 1 é condição para convergência. Todos os parâmetros apresentaram $\hat{R}$ próximo de 1, sendo o menor $\hat{R} = 0.9995999$ e maior $\hat{R} = 1.002963$.
 
 ### Ajuste 
 
 Para verificar o comportamento do modelo com um conjunto de dados reais, assim como no artigo original o modelo é ajustado para dados do campeonato italiano, aqui ele será testado com dados do Campeonato Brasileiro "Brasileirão" ano de 2019. 
 
-Os dados foram disponibilizados por [@dados_brasileirao] no Github, com o seguinte formato:
+Os dados foram disponibilizados por @dados_brasileirao no Github, com o seguinte formato:
 
-```{r echo=FALSE}
-knitr::kable(read_rds("/home/mariana/Documents/pessoal/monografia/soccer-models/dataframe_head.rds"))
+```{r}
+df <- read_rds("/home/mariana/Documents/pessoal/monografia/soccer-models/dataframe_head.rds")
+
+kable(df, booktabs = T) |> 
+  kable_styling(position = "center", latex_options = "hold_position")
 ```
 
 As colunas _home_team_index_ e _away_team_index_ foram criadas atribuindo um valor inteiro ordinal para cada time, seguindo a notação do modelo.
 
 Comparando a pontuação **acumulada** ao longo do campeonato observada e a pontuação estimada pelo modelo, tem-se o seguinte comportamento para cada time:
 
-![Pontuação acumulada - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/model1-cumsum-brasileirao2019.png)
+![Pontuação acumulada - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model1-cumsum-brasileirao2019.png)
 O desempenho do time 5 foi superestimado pelo modelo, enquanto o contrário aconteceu para o time 9, seu desempenho foi subestimado pelo modelo hierárquico. Os times 2, 12, 15 e 14 apresentam a pontuação acumulada mais próxima entre o estimado e o observado.
+
+```{r}
+pontuacao_m1 <- read_rds("/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/pontuacao_total_m1.rds")
+
+kable(pontuacao_m1, booktabs = T) |> 
+  kable_styling(position = "center", latex_options = "hold_position")
+```
+
+Santos foi time com maior pontuação atribuída pelo modelo, estimando exatamente a pontuação obtida pelo time no campeonato e, assim, sendo o campeão segundo o modelo. Porém, o campeão de 2019 foi o Flamengo e o vice-campeão o Santos.
 
 #### Diagnóstico de convergência do ajuste
 
@@ -136,27 +153,63 @@ $$
 $$
 Para a inclusão da covariância como $\lambda_3$, Karlis (2003) apresenta o preditor linear que permite combinar diferentes modelos: 
 
-$\log(\lambda_{3i}) = \beta^{con} + \gamma_1\beta_{h_i}^{home} + \gamma_2\beta_{g_i}^{away}$
+$\log(\lambda_{3i}) = \alpha^{con} + \gamma_1\alpha_{h_i}^{home} + \gamma_2\alpha_{g_i}^{away}$
 
 No qual $\gamma_j$ varia de acordo com o modelo de interesse: quando assume valor 0, temos que a covariância é constante.
 
+### Simulação
+
+Com o objetivo de verificar a estimação certa dos parâmetros, também foi feita uma simulação com 1000 réplicas de tamanho 380, representando o número de jogos de um campeonato com 20 times. Neste modelo, os parâmetros para simulação são definidos como:
+
+- $home = 0.13$
+- $\mu = 0.21$
+- $\alpha = 0.20$
+- $\sigma_{att} = 0.92$
+- $\sigma_{def} = 0.80$
+
+A partir dos resultados dos histogramas obtidos na simulação, tem-se que o modelo estima corretamente os parâmetros.
+
+![Simulação - Modelo 2](artifacts/sim-modelo2-27-06.png)
+
+### Diagnóstico de convergência da simulação
+
+As simulações foram realizadas com apenas 01 cadeia e 5000 interações. O gráfico traceplot mostra que a cadeia converge e consegue caminhar pelo espaço paramétrico.
+
+![Traceplot - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model1-traceplot-sim.png)
+A estatística $\hat{R}$ para os parâmetros se mostrou próxima de 1, sendo o menor $\hat{R} = 0.9995999$ e maior $\hat{R} = 1.002963$.
+
+### Ajuste
+
+Assim como o primeiro modelo, o modelo 2 foi ajustado para o Campeonato Brasileiro de 2019. Neste modelo, $\gamma_1=\gamma_2=0$. 
+
+![Pontuação acumulada - Modelo 2](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model2-cumsum-brasileirao2019.png)
+
+```{r}
+pontuacao_m2 <- read_rds("artifacts/pontuacao_total_m2.rds")
+
+kable(pontuacao_m2, align = 'c', booktabs = T) |> 
+  kable_styling(position = "center", latex_options = "hold_position")
+```
+
+O modelo 2 tem o Flamengo como maior pontuador ao longo do campeonato, acertando o vencedor. O segundo lugar ficou entre o Santos e Grêmio, segundo e quarto colocado respectivamente.
+
+Além dos campeões, os quatro últimos times são rebaixados para a segunda divisão. Nesse modelo, há um empate na pontuação final dos times Cruzeiro e Ceará e, seguindo pelo critério do maior saldo de gols, o Cruzeiro seria rebaixado juntamente com Bahia, Chapecoense e CSA. Os times rebaixados no ano foram Cruzeiro, CSA, Chapecoense e Avaí, ou seja, o modelo 2 errou apenas uma das equipes.
+
 ## Modelo 3
 
-Abordagem com uma distribuição Poisson inflada de zeros.
+O modelo três é uma extensão do modelo 2, no qual $\gamma_1 = 1, \gamma_2=0$. Não foi feita uma simulação para o modelo por limitações de memória no computador.
 
 ## Modelo 4
 
-Abordagem com uma distribuição Binomial Negativa.
+O modelo quatro é uma extensão do segundo modelo, no qual $\gamma_1 = 1, \gamma_2=1$. Também não foi realizada uma simulação pela mesma razão do modelo 3.
+
+Extensão do modelo 3
 
 ## Modelo 5
 ## Modelo 6
 
-# 3. Implementação e resultados
-# 4. Análise de convergência
-# 5. Referências
-
-[@R-base]
-
+# 3. Comparação dos modelos
+# 4. Outros modelos
 # Exemplo Tabela
 ## R Markdown
 
@@ -181,3 +234,4 @@ data_frame(
   #                     "Other parameters" = 5))
 ```
 
+# 5. Referências

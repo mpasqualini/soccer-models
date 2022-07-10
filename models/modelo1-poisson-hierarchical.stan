@@ -59,7 +59,7 @@ generated quantities {
     y1_tilde[g] = poisson_log_rng(home + att[h[g]] + def[a[g]]);
     y2_tilde[g] = poisson_log_rng(att[a[g]] + def[h[g]]);
     
-    log_lik_y1 = poisson_log_lpmf(y1[g] | home + att[h[g]] + def[a[g]]);
-    log_lik_y2 = poisson_log_lpmf(y2[g] | att[a[g]] + def[h[g]]);
+    log_lik_y1 += poisson_log_lpmf(y1[g] | home + att[h[g]] + def[a[g]]);
+    log_lik_y2 += poisson_log_lpmf(y2[g] | att[a[g]] + def[h[g]]);
   }
 }

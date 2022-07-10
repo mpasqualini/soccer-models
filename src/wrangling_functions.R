@@ -13,7 +13,7 @@ reindex_teams <- function(data) {
                                         teams_dict$team_original_id))
   ]
   
-  return(data)
+  #return(data)
 }
 
 get_team_points_per_game <- function(data, y1, y2) {
@@ -27,12 +27,12 @@ get_team_points_per_game <- function(data, y1, y2) {
            ))
   
   home <- game_points |> 
-    select(h, home_team_points) |> 
-    rename(team_id = h, points_scored = home_team_points)
+    select(h, home_team_points, home_team_name) |> 
+    rename(team_id = h, points_scored = home_team_points, team_name = home_team_name)
   
   away <- game_points |> 
-    select(a, away_team_points) |> 
-    rename(team_id = a, points_scored = away_team_points)
+    select(a, away_team_points, away_team_name) |> 
+    rename(team_id = a, points_scored = away_team_points, team_name = away_team_name)
   
   teams_points <- rbind(home, away) |> 
     group_by(team_id) |> 

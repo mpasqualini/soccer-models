@@ -5,7 +5,7 @@ library(posterior)
 library(tidyverse)
 library(rstan)
 
-source("src/funcoes.R")
+source("src/sim_functions.R")
 
 # Model 2: gamma1 = gamma2 = 0 ----
 
