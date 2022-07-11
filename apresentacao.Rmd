@@ -1,0 +1,43 @@
+---
+title: "Comparação do desempenho de modelos propostos para o ajuste
+de dados de esportes coletivos"
+author: "Mariana de Castro Pasqualini"
+date: '2022-07-11'
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Introdução
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Modelos
+
+## Modelo 1 
+### Simulação
+### Ajuste 
+
+## Modelo 2 
+### Simulação
+### Ajuste 
+
+## Modelo 3 
+### Ajuste 
+
+## Modelo 4
+### Ajuste 
+
+## Outros modelos 
+
+## Comparação 
