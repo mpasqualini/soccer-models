@@ -70,9 +70,13 @@ points_per_game_obs_m1 <- merge(score_brasileirao_2019,
                                 by = c("game_id", "team_id", "team_name"), 
                                 suffixes = c("_obs", "_est_m1"))
 
-points_per_game_obs_m1 |> 
+## Results ---- 
+cumsum_m1 <- points_per_game_obs_m1 |> 
   pivot_longer(cols = c(points_scored_obs, points_scored_est_m1)) |> 
   create_cumsum_points_plot()
+
+ggsave(filename = "artifacts/cumsum_m1.png", plot = cumsum_m1, 
+       width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao <- points_per_game_obs_m1 |> 
   group_by(team_name) |> 
@@ -81,24 +85,14 @@ pontuacao <- points_per_game_obs_m1 |>
 
 saveRDS(pontuacao, "artifacts/pontuacao_total_m1.rds")
 
-## MSE ----
+### MSE ----
 
 mse_m1 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
                                   brasileirao_2019_with_pred$y1_pred_m1),
                      mse_y2 = mse(brasileirao_2019_with_pred$y2, 
                                   brasileirao_2019_with_pred$y2_pred_m1))
 
-#points_championship <- merge(score_brasileirao_2019, 
-#                             score_brasileirao_2019_pred, 
-#                             by = c("game_id", "team_id"), 
-#                             suffixes = c("_obs", "_est")) |> 
-#  group_by(team_id) |> 
-#  summarise(total_obs = sum(points_scored_obs),
-#            total_est = sum(points_scored_est), 
-#            mse = (total_obs - total_est)) |> 
-#  summarise(mean(total_obs - total_est)^2)
-
-## LOO ----
+### LOO ----
 
 log_lik_y1_m1 <- extract_log_lik(m1_fit, parameter_name = "log_lik_y1")
 ref_y1_m1 <- relative_eff(exp(log_lik_y1_m1), chain_id = rep(1, 2500))
@@ -143,9 +137,13 @@ points_per_game_obs_m2 <- merge(score_brasileirao_2019,
                              by = c("game_id", "team_id", "team_name"), 
                              suffixes = c("_obs", "_est_m2")) 
 
-points_per_game_obs_m2 |> 
+## Results ----
+cumsum_m2 <- points_per_game_obs_m2 |> 
   pivot_longer(cols = c(points_scored_obs, points_scored_est_m2)) |> 
   create_cumsum_points_plot()
+
+ggsave(filename = "artifacts/cumsum_m2.png", plot = cumsum_m2, 
+       width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao_m2 <- points_per_game_obs_m2 |> 
   group_by(team_name) |> 
@@ -155,18 +153,18 @@ pontuacao_m2 <- points_per_game_obs_m2 |>
 saveRDS(pontuacao_m2, "artifacts/pontuacao_total_m2.rds")
 
 # Desempate rebaixamento
-pontuacao_m2 |> slice_min(score_est_m2, n=4)
-brasileirao_2019_with_pred |> 
-  filter(h == 11 | a == 11) |> 
-  summarize(sum(y1_pred_m2, y2_pred_m2))
+# pontuacao_m2 |> slice_min(score_est_m2, n=4)
+# brasileirao_2019_with_pred |> 
+#   filter(h == 11 | a == 11) |> 
+#   summarize(sum(y1_pred_m2, y2_pred_m2))
 
-## MSE ----
+### MSE ----
 mse_m2 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
                                   brasileirao_2019_with_pred$y1_pred_m2),
                      mse_y2 = mse(brasileirao_2019_with_pred$y2, 
                                      brasileirao_2019_with_pred$y2_pred_m2))
 
-## LOO ----
+### LOO ----
 
 log_lik_y1_m2 <- extract_log_lik(m2_fit, parameter_name = "log_lik_y1")
 ref_y1_m2 <- relative_eff(exp(log_lik_y1_m2), chain_id = rep(1, 2500))
@@ -211,9 +209,14 @@ points_per_game_obs_m3 <- merge(score_brasileirao_2019,
                                 by = c("game_id", "team_id", "team_name"), 
                                 suffixes = c("_obs", "_est_m3")) 
 
-points_per_game_obs_m3 |> 
+## Results ----
+
+cumsum_m3 <- points_per_game_obs_m3 |> 
   pivot_longer(cols = c(points_scored_obs, points_scored_est_m3)) |> 
   create_cumsum_points_plot()
+
+ggsave(filename = "artifacts/cumsum_m3.png", plot = cumsum_m3, 
+       width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao_m3 <- points_per_game_obs_m3 |> 
   group_by(team_name) |> 
@@ -222,14 +225,14 @@ pontuacao_m3 <- points_per_game_obs_m3 |>
 
 saveRDS(pontuacao_m3, "artifacts/pontuacao_total_m3.rds")
 
-## MSE ----
+### MSE ----
 
 mse_m3 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
                                   brasileirao_2019_with_pred$y1_pred_m3),
                      mse_y2 = mse(brasileirao_2019_with_pred$y2, 
                                      brasileirao_2019_with_pred$y2_pred_m3))
 
-## LOO ----
+### LOO ----
 
 log_lik_y1_m3 <- extract_log_lik(m3_fit, parameter_name = "log_lik_y1")
 ref_y1_m3 <- relative_eff(exp(log_lik_y1_m3), chain_id = rep(1, 2500))
@@ -274,9 +277,14 @@ points_per_game_obs_m4 <- merge(score_brasileirao_2019,
                                 by = c("game_id", "team_id", "team_name"), 
                                 suffixes = c("_obs", "_est_m4")) 
 
-points_per_game_obs_m4 |> 
+## Results ----
+
+cumsum_m4 <- points_per_game_obs_m4 |> 
   pivot_longer(cols = c(points_scored_obs, points_scored_est_m4)) |> 
   create_cumsum_points_plot()
+
+ggsave(filename = "artifacts/cumsum_m4.png", plot = cumsum_m4, 
+       width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao_m4 <- points_per_game_obs_m4 |> 
   group_by(team_name) |> 
@@ -285,14 +293,14 @@ pontuacao_m4 <- points_per_game_obs_m4 |>
 
 saveRDS(pontuacao_m4, "artifacts/pontuacao_total_m4.rds")
 
-## MSE ----
+### MSE ----
 
 mse_m4 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
                                   brasileirao_2019_with_pred$y1_pred_m4),
                      mse_y2 = mse(brasileirao_2019_with_pred$y2, 
                                      brasileirao_2019_with_pred$y2_pred_m4))
 
-## LOO ----
+### LOO ----
 
 log_lik_y1_m4 <- extract_log_lik(m4_fit, parameter_name = "log_lik_y1")
 ref_y1_m4 <- relative_eff(exp(log_lik_y1_m4), chain_id = rep(1, 2500))
@@ -301,6 +309,73 @@ loo_y1_m4 <- loo(log_lik_y1_m4, r_eff = ref_y1_m4)
 log_lik_y2_m4 <- extract_log_lik(m4_fit, parameter_name = "log_lik_y2")
 ref_y2_m4 <- relative_eff(exp(log_lik_y2_m4), chain_id = rep(1, 2500))
 loo_y2_m4 <-loo(log_lik_y2_m4, r_eff = ref_y2_m4)
+
+# Model 5 ----
+
+brasileirao_2019_list_m5 <- list(G = nrow(brasileirao_2019), 
+                                 T = 20,
+                                 h = brasileirao_2019$h,
+                                 a = brasileirao_2019$a,
+                                 y1 = brasileirao_2019$y1,
+                                 y2 = brasileirao_2019$y2,
+                                 gamma1 = 0,
+                                 gamma2 = 1)
+
+m5 <- stan_model(file = "models/modelo2-poisson-bivariate.stan", 
+                 model_name = "model3-bivariate-gamma11")
+
+m5_fit <- sampling(object = m5, 
+                   data = brasileirao_2019_list_m5, 
+                   chains = 1, 
+                   iter = 5000)
+
+y_predict_m5 <- extract(m5_fit, pars = c("y1_tilde", "y2_tilde"))
+y_predict_m5_df <- data.frame(y1_pred_m5 = y_predict_m5$y1_tilde[1,], 
+                              y2_pred_m5 = y_predict_m5$y2_tilde[1,])
+
+brasileirao_2019_with_pred <- cbind(brasileirao_2019_with_pred, y_predict_m5_df)
+
+score_brasileirao_2019_m5_pred <- 
+  get_team_points_per_game(data = brasileirao_2019_with_pred, 
+                           y1 = quo(y1_pred_m5), 
+                           y2 = quo(y2_pred_m5))
+
+points_per_game_obs_m5 <- merge(score_brasileirao_2019, 
+                                score_brasileirao_2019_m5_pred, 
+                                by = c("game_id", "team_id", "team_name"), 
+                                suffixes = c("_obs", "_est_m5")) 
+
+## Results ----
+cumsum_m5 <- points_per_game_obs_m5 |> 
+  pivot_longer(cols = c(points_scored_obs, points_scored_est_m5)) |> 
+  create_cumsum_points_plot()
+
+ggsave(filename = "artifacts/cumsum_m5.png", plot = cumsum_m5, 
+       width = 9.76, height = 7.37, dpi = 300)
+
+pontuacao_m5 <- points_per_game_obs_m5 |> 
+  group_by(team_name) |> 
+  summarize(score_obs = sum(points_scored_obs), 
+            score_est_m5 = sum(points_scored_est_m5))
+
+saveRDS(pontuacao_m5, "artifacts/pontuacao_total_m5.rds")
+
+### MSE ----
+
+mse_m5 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
+                                  brasileirao_2019_with_pred$y1_pred_m5),
+                     mse_y2 = mse(brasileirao_2019_with_pred$y2, 
+                                  brasileirao_2019_with_pred$y2_pred_m5))
+
+### LOO ----
+
+log_lik_y1_m5 <- extract_log_lik(m5_fit, parameter_name = "log_lik_y1")
+ref_y1_m5 <- relative_eff(exp(log_lik_y1_m5), chain_id = rep(1, 2500))
+loo_y1_m5 <- loo(log_lik_y1_m5, r_eff = ref_y1_m5)
+
+log_lik_y2_m5 <- extract_log_lik(m5_fit, parameter_name = "log_lik_y2")
+ref_y2_m5 <- relative_eff(exp(log_lik_y2_m5), chain_id = rep(1, 2500))
+loo_y2_m5 <-loo(log_lik_y2_m5, r_eff = ref_y2_m5)
 
 # Compare all models ----
 
@@ -318,6 +393,13 @@ points_per_game_obs_m3_m4 <- merge(points_per_game_obs_m3,
                                           "team_name",
                                           "points_scored_obs"))
 
+points_per_game_obs_m3_m4 <- merge(points_per_game_obs_m3_m4,
+                                   points_per_game_obs_m5,
+                                   by = c("game_id", 
+                                          "team_id", 
+                                          "team_name",
+                                          "points_scored_obs"))
+
 points_per_game_obs_all_models <- merge(points_per_game_obs_m1_m2, 
                                         points_per_game_obs_m3_m4, 
                                         by = c("game_id", 
@@ -325,15 +407,32 @@ points_per_game_obs_all_models <- merge(points_per_game_obs_m1_m2,
                                                "team_name",
                                                "points_scored_obs"))
 
-points_per_game_obs_all_models |> 
+pontuacao_all <- points_per_game_obs_all_models |> 
+  group_by(team_name) |> 
+  summarize(score_obs = sum(points_scored_obs), 
+            score_est_m1 = sum(points_scored_est_m1),
+            score_est_m2 = sum(points_scored_est_m2),
+            score_est_m3 = sum(points_scored_est_m3),
+            score_est_m4 = sum(points_scored_est_m4),
+            score_est_m5 = sum(points_scored_est_m5))
+
+saveRDS(pontuacao_all, "artifacts/pontuacao_all.rds")
+
+cumsum_all <- points_per_game_obs_all_models |> 
   pivot_longer(cols = c(points_scored_obs, 
                         points_scored_est_m1, 
                         points_scored_est_m2,
                         points_scored_est_m3,
-                        points_scored_est_m4)) |> 
-  create_cumsum_points_plot()
+                        points_scored_est_m4,
+                        points_scored_est_m5,)) |> 
+  create_cumsum_points_plot(linewidth = 0.8)
 
-mse_models <- rbind(mse_m1, mse_m2, mse_m3, mse_m4)
+ggsave(filename = "artifacts/cumsum_all.png", plot = cumsum_all, 
+       width = 9.76, height = 7.37, dpi = 300)
 
-loo_compare_y1 <- loo_compare(loo_y1_m1, loo_y1_m2, loo_y1_m3, loo_y1_m4)
-loo_compare_y2 <- loo_compare(loo_y2_m1, loo_y2_m2, loo_y2_m3, loo_y2_m4)
+mse_models <- rbind(mse_m1, mse_m2, mse_m3, mse_m4, mse_m5)
+
+loo_compare_y1 <- loo_compare(loo_y1_m1, loo_y1_m2, 
+                              loo_y1_m3, loo_y1_m4, loo_y1_m5)
+loo_compare_y2 <- loo_compare(loo_y2_m1, loo_y2_m2, loo_y2_m3, 
+                              loo_y2_m4, loo_y2_m5)
