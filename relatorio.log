@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.21)  12 JUL 2022 01:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.21)  12 JUL 2022 18:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -779,13 +779,13 @@ tifier (name{figure.6}) has been already used, duplicate ignored
 l.581 
        </home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cums
 um_m5.png (PNG copy)>]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 5
-99.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 6
+01.
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-604.
+606.
 (/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -794,18 +794,18 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [14 </home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_
 all.png (PNG copy)>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 669.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 671.
 [15pdfTeX warning (ext4): destination with the same identifier (name{table.1}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.669 \end{document}
+l.671 \end{document}
                     ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 669.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 671.
 (./relatorio.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 669.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 669.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 671.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 671.
  ) 
 Here is how much of TeX's memory you used:
  14765 strings out of 481239
@@ -828,7 +828,7 @@ e/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm
 /lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/
 fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10
 .pfb>
-Output written on relatorio.pdf (15 pages, 2440806 bytes).
+Output written on relatorio.pdf (15 pages, 2449908 bytes).
 PDF statistics:
  292 PDF objects out of 1000 (max. 8388607)
  248 compressed objects within 3 object streams

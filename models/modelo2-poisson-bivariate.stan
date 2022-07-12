@@ -65,8 +65,7 @@ generated quantities {
   vector[G] lambda3;
   vector[G] y1_tilde;
   vector[G] y2_tilde;
-  vector[G] log_lik_y1;
-  vector[G] log_lik_y2;
+  vector[G] log_lik;
   
   for (g in 1:G) {
     lambda1[g] = exp(mu + home + att[h[g]] + def[a[g]]);
@@ -76,7 +75,6 @@ generated quantities {
     y1_tilde[g] = poisson_rng(lambda1[g] + lambda3[g]);
     y2_tilde[g] = poisson_rng(lambda2[g] + lambda3[g]);
     
-    log_lik_y1[g] = poisson_log_lpmf(y1[g] | mu + home + att[h[g]] + def[a[g]] + alpha + gamma1 * alpha_home[h[g]] + gamma2 * alpha_away[a[g]]);
-    log_lik_y2[g] = poisson_log_lpmf(y2[g] | mu + att[a[g]] + def[h[g]] + alpha + gamma1 * alpha_home[h[g]] + gamma2 * alpha_away[a[g]]);
+    log_lik[g] = poisson_log_lpmf(y1[g] | mu + home + att[h[g]] + def[a[g]] + alpha + gamma1 * alpha_home[h[g]] + gamma2 * alpha_away[a[g]]) + poisson_log_lpmf(y2[g] | mu + att[a[g]] + def[h[g]] + alpha + gamma1 * alpha_home[h[g]] + gamma2 * alpha_away[a[g]]);
   }
 }

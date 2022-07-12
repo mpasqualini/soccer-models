@@ -132,10 +132,14 @@ Comparando a pontuação **acumulada** ao longo do campeonato observada e a pont
 O desempenho do time 5 foi superestimado pelo modelo, enquanto o contrário aconteceu para o time 9, seu desempenho foi subestimado pelo modelo hierárquico. Os times 2, 12, 15 e 14 apresentam a pontuação acumulada mais próxima entre o estimado e o observado.
 
 ```{r}
-pontuacao_m1 <- read_rds("/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/pontuacao_total_m1.rds")
 
-kable(pontuacao_m1, booktabs = T) |> 
-  kable_styling(position = "center", latex_options = "hold_position")
+read_rds("artifacts/pontuacao_total_m1.rds") |> 
+  rename("Time" = team_name,
+         "Pontuação observada" = score_obs, 
+         "Pontuação estimada (Modelo 1)" = score_est_m1 ) |>
+  kable(booktabs = T) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position")
 ```
 
 Santos foi time com maior pontuação atribuída pelo modelo, estimando exatamente a pontuação obtida pelo time no campeonato e, assim, sendo o campeão segundo o modelo. Porém, o campeão de 2019 foi o Flamengo e o vice-campeão o Santos.
