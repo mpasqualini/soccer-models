@@ -20,9 +20,12 @@ library(tidyverse)
 Modelos estatísticos podem ser aplicados em diferentes áreas do conhecimento. Uma delas, que tem crescido nos últimos anos, é a análise de dados de competições e eventos esportivos. O número de gols marcados, por exemplo, pode ser tratado como dados de contagem e representados por modelos discretos. Estes modelos são vastamente representados na literatura desde a década de 80, como em @pollard_69.9_1985 que utiliza a distribuição Binomial Negativa, enquanto @baxter_discriminating_1988 apresentam as diferenças entre a Binomial Negativa e Poisson para modelar o placar de partidas de futebol. Tais modelos desconsideram uma estrutura de correlação entre os gols de cada oponente. @karlis_analysis_2003 sugere a distribuição Poisson bivariada, que permite uma correlação entre o número de gols marcados pelo mandante e visitante e, ainda, há uma proposta de um modelo bayesiano hierárquico com efeitos aleatórios como definido por @baio_bayesian_2010. Neste trabalho, são implementados, ajustados e comparados modelos baseados na distribuição Poisson para dados do Campeonato Brasileiro de 2019, 2020 e 2021, obtido em @dados_brasileirao utilizando o software Stan e RStan para inferência bayesiana. 
 
 # 2. Modelos 
+
+Para o problema de contagem do número de gols em uma partida, o modelo mais comum é baseado na distribuição de Poisson. Essa distribuição é discreta, representando o número de eventos ocorridos em um intervalo de tempo. Uma das limitações dela é que sua média $\lambda$ e variância são iguais, portanto se há uma superdispersão nos dados, o modelo pode não ser tão apropriado. Todos os modelos que serão apresentados aqui são baseados nessa distribuição e ajustados aos dados do Campeonato Brasileiro, popularmente conhecido como Brasileirão, do ano de 2019.
+
 ## Modelo 1
 
-@baio_bayesian_2010 sugerem um modelo bayesiano hierárquico para os gols marcados na partida. No modelo proposto, o número de gols marcados segue uma distribuição Poisson condicionalmente independentes, em que a correlação é incluída por meio dos hiperparâmetros. A distribuição Poisson é vastamente utilizada para problemas de contagem e amplamente aplicada à análises esportivas como sugerem M. Dixon and S. Coles (2007) e D. Karlis and I. Ntzoufras (2003), dentre outros autores.
+@baio_bayesian_2010 sugere um modelo bayesiano hierárquico para os gols marcados em uma determinada partida. No modelo proposto, o número de gols realizados segue uma distribuição Poisson condicionalmente independentes, em que a correlação é incluída por meio dos hiperparâmetros. A distribuição Poisson é vastamente utilizada para problemas de contagem e amplamente aplicada à análises esportivas como sugerem M. Dixon e S. Coles (2007) e D. Karlis e I. Ntzoufras (2003), dentre outros autores.
 
 O vetor $\mathbf{y} = (y_{g1}, y_{g2})$ como um vetor de contagens, podemos tomar 
 
@@ -55,7 +58,7 @@ def_t \sim Normal(\mu_{def}, \tau_{def})
 $$
 Sendo t cada um dos times do campeonato. A Normal é definida pela média e precisão. O modelo original foi implementado no WinBUGS, que utiliza a mesma parametrização apresentada no artigo. Como priori para $\mu$ é definida uma $Normal(0, 0.0001)$ tanto para o ataque quanto defesa, e $Gamma(0.1, 0.1)$ para os $\tau$ de ataque e defesa.
 
-Aqui, o modelo foi implementado no Stan e uma adaptação foi necessária, considerando que a parametrização do software é diferente, com a Normal definida pela média e desvio padrão. Passamos a ter: 
+Nesse trabalho, o modelo foi implementado no Stan e uma adaptação foi necessária, considerando que a parametrização do software é diferente. A distribuição Normal é definida pela média e desvio padrão, então passamos a ter as prioris para os parâmetros:
 
 $$
 att_t \sim Normal(\mu_{att}, \sigma_{att})
@@ -63,8 +66,12 @@ $$
 $$
 def_t \sim Normal(\mu_{def}, \sigma_{def})
 $$
+Além disso, é necessário definir também as distribuições a priori dos hiperparâmetros. Para as médias, como não há conhecimento de informações que podem ser agregadas à priori, a escolha são prioris pouco informativas:
 
-Conforme demonstrado por por @gelman_weakly_2008 e comentado em @apostilaStan, a priori não-informativa recomendada é uma Cauchy, portanto: 
+- $\mu_{att} \sim Normal(0, 10)$
+- $\mu_{def} \sim Normal(0, 10)$
+
+Conforme demonstrado por por @gelman_weakly_2008 e comentado em @apostilaStan, a priori não-informativa recomendada para o desvio padrão é uma Cauchy, portanto: 
 
 $$
 \sigma_{att} \sim Cauchy(0, 2.5)
@@ -113,9 +120,9 @@ Outra estatística útil é o $\hat{R}$, que próximo de 1 é condição para co
 
 ### Ajuste 
 
-Para verificar o comportamento do modelo com um conjunto de dados reais, assim como no artigo original o modelo é ajustado para dados do campeonato italiano, aqui ele será testado com dados do Campeonato Brasileiro "Brasileirão" ano de 2019. 
+Para verificar o comportamento do modelo com um conjunto de dados reais, assim como no artigo original o modelo é ajustado para dados do campeonato italiano, aqui ele será testado com dados do Campeonato Brasileiro do ano de 2019. 
 
-Os dados foram disponibilizados por @dados_brasileirao no Github, com o seguinte formato:
+O dados foram disponibilizados por @dados_brasileirao no Github, com o seguinte formato:
 
 ```{r}
 df <- read_rds("/home/mariana/Documents/pessoal/monografia/soccer-models/dataframe_head.rds")
@@ -129,10 +136,9 @@ As colunas _home_team_index_ e _away_team_index_ foram criadas atribuindo um val
 Comparando a pontuação **acumulada** ao longo do campeonato observada e a pontuação estimada pelo modelo, tem-se o seguinte comportamento para cada time:
 
 ![Pontuação acumulada - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m1.png)
-O desempenho do time 5 foi superestimado pelo modelo, enquanto o contrário aconteceu para o time 9, seu desempenho foi subestimado pelo modelo hierárquico. Os times 2, 12, 15 e 14 apresentam a pontuação acumulada mais próxima entre o estimado e o observado.
+
 
 ```{r}
-
 read_rds("artifacts/pontuacao_total_m1.rds") |> 
   rename("Time" = team_name,
          "Pontuação observada" = score_obs, 
@@ -146,9 +152,11 @@ Santos foi time com maior pontuação atribuída pelo modelo, estimando exatamen
 
 #### Diagnóstico de convergência do ajuste
 
+![Convergência - Modelo 1](artifacts/traceplot_m1.png)
+
 ## Modelo 2
 
-A distribuição Poisson é um dos modelos mais utilizados na literatura para análises do número de gols marcados em uma partida de futebol. As variáveis-resposta são usualmente modeladas como duas Poisson independentes, considerando que o número de gols de um time não afeta o número de gols do outro time. Tal suposição não é muito razoável, considerando, por exemplo, que a força de defesa de um time interfere nas oportunidades para a marcação de gols do oponente. A partir disso, @karlis_analysis_2003 sugerem a modelagem do número de gols a partir de uma Poisson bivariada, que permite a inclusão de uma covariância positiva que faz o papel da dependência entre as duas variáveis Poisson que, marginalmente, são independentes.
+Conforme dito anteriormente, a distribuição Poisson é um dos modelos mais utilizados na literatura para análises do número de gols marcados em uma partida de futebol. As variáveis-resposta são usualmente modeladas como duas Poisson independentes, considerando que o número de gols de um time não afeta o número de gols do outro time. Tal suposição não é muito razoável, considerando, por exemplo, que a força de defesa de um time interfere nas oportunidades para a marcação de gols do oponente. A partir disso, @karlis_analysis_2003 sugerem a modelagem do número de gols a partir de uma Poisson bivariada, que permite a inclusão de uma covariância positiva que faz o papel da dependência entre as duas variáveis Poisson que, marginalmente, são independentes.
 
 Sendo $X = X_1 + X_3$ e $Y = X_2 + X_3$, duas variáveis aleatórias com $X_i \sim Poisson(\lambda_i)$, então $X$ e $Y$ seguem conjuntamente uma Poisson bivariada $\mathbf{BP}(\lambda_1, \lambda_2, \lambda_3)$.
 
@@ -190,6 +198,8 @@ $$
 
 ### Priori
 
+A escolha das distribuições a priori deste modelo segue o mesmo princípio do modelo 1: prioris pouco informativas.
+
 $$home \sim Normal(0, 10)$$
 $$\sigma_{att} \sim Cauchy(0, 2.5)$$
 $$\sigma_{def} \sim Cauchy(0, 2.5)$$
@@ -214,7 +224,7 @@ A partir dos resultados dos histogramas obtidos na simulação, tem-se que o mod
 
 ### Diagnóstico de convergência da simulação
 
-As simulações foram realizadas com apenas 01 cadeia e 5000 interações. O gráfico traceplot mostra que a cadeia converge e consegue caminhar pelo espaço paramétrico.
+As simulações foram realizadas com apenas 01 cadeia e 5000 interações. O gráfico traceplot mostra que a cadeia converge e consegue iterar por todo espaço paramétrico.
 
 ![Traceplot - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model1-traceplot-sim.png)
 A estatística $\hat{R}$ para os parâmetros se mostrou próxima de 1, sendo o menor $\hat{R} = 0.9995999$ e maior $\hat{R} = 1.002963$.
@@ -226,10 +236,13 @@ Assim como o primeiro modelo, o modelo 2 foi ajustado para o Campeonato Brasilei
 ![Pontuação acumulada - Modelo 2](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m2.png)
 
 ```{r}
-pontuacao_m2 <- read_rds("artifacts/pontuacao_total_m2.rds")
-
-kable(pontuacao_m2, align = 'c', booktabs = T) |> 
-  kable_styling(position = "center", latex_options = "hold_position")
+read_rds("artifacts/pontuacao_total_m2.rds") |> 
+  rename("Time" = team_name,
+         "Pontuação observada" = score_obs, 
+         "Pontuação estimada (Modelo 2)" = score_est_m2) |>
+  kable(booktabs = T) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position")
 ```
 
 O modelo 2 tem o Flamengo como maior pontuador ao longo do campeonato, acertando o vencedor. O segundo lugar ficou entre o Santos e Grêmio, segundo e quarto colocado respectivamente.
@@ -238,23 +251,25 @@ Além dos campeões, os quatro últimos times são rebaixados para a segunda div
 
 ## Modelo 3
 
-O modelo três é uma extensão do modelo 2, no qual $\gamma_1 = 1, \gamma_2=0$. Não foi feita uma simulação para o modelo por limitações de memória no computador.
+O modelo três é uma extensão do modelo 2, no qual $\gamma_1 = 1, \gamma_2=0$. Apenas o efeito fixo e o efeito que depende da equipe mandante são considerados no parâmetro de correlação $\lambda_3$. Não foi feita uma simulação para o modelo por limitações de memória no computador.
 
 ![Pontuação acumulada - Modelo 3](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m3.png)
 
 ## Modelo 4
 
-O modelo quatro é uma extensão do segundo modelo, no qual $\gamma_1=1, \gamma_2=1$. Também não foi realizada uma simulação pela mesma razão do modelo 3.
+O modelo quatro é uma extensão do segundo modelo, no qual $\gamma_1=1, \gamma_2=1$. Nesse caso, a correlação entre os gols do mandante e visitante depende do efeito fixo e dos efeitos de cada time. É a variação mais completa do modelo 2. Contudo, talvez ela fizesse mais sentido se suportasse uma covariância negativa, representando as condições reais para os dois times em campo. Também não foi realizada uma simulação pela mesma razão do modelo 3.
 
 ![Pontuação acumulada - Modelo 4](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m4.png)
 
 ## Modelo 5
 
-O modelo quatro é uma extensão do segundo modelo, no qual $\gamma_1=0, \gamma_2=1$. Também não foi realizada uma simulação pela mesma razão do modelo 3.
+O modelo quatro é uma extensão do segundo modelo, que leva em consideração apenas o efeito fixo $\alpha$ e o efeito dependente do time visitante, sendo $\gamma_1=0, \gamma_2=1$. Também não foi realizada uma simulação por limitações computacionais.
 
 ![Pontuação acumulada - Modelo 5](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m5.png)
 
 # 3. Comparação dos modelos
+
+Medidas de qualidade relativa dos modelos são fundamentais para seleção de modelos e avaliação da acurácia preditiva dos modelos. 
 
 ![Pontuação acumulada - Todos os modelos](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_all.png)
 Como o cálculo do LOO-CV é feito baseado na log-verossimilhança de cada observação, algumas delas podem ser muito influentes. Isso é especialmente sensível quando temos distribuições com caudas longas. Para isso, é calculado o PSIS.
@@ -265,6 +280,7 @@ Um possível problema com modelos hierárquicos é um efeito de encolhimento, no
 
 Uma outra possibilidade de mistura é um modelo inflado de zeros.
 
+#5. Conclusão
 
 # Exemplo Tabela
 ## R Markdown
@@ -290,4 +306,9 @@ data_frame(
   #                     "Other parameters" = 5))
 ```
 
-# 5. Referências
+# 6. Referências
+# 7. Apêndice
+
+1. Traceplot para diagnóstico das cadeias 
+
+

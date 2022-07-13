@@ -43,6 +43,10 @@ get_team_points_per_game <- function(data, y1, y2) {
 
 mse <- function(actual, predicted) {
   mse <- mean((actual - predicted)^2)
-  
   return(mse)
+}
+
+se <- function(actual, predicted) {
+  se <- (actual - predicted)^2
+  return(se)
 }

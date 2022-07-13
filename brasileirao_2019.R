@@ -6,6 +6,7 @@ library(rstan)
 set.seed(123)
 source("src/wrangling_functions.R")
 source("src/plot_functions.R")
+path_to_save <- "artifacts/2019/"
 
 time_ids <- fread("data/times_ids.csv") |> distinct(id, .keep_all = TRUE)
 time_ids <- time_ids[ , id, nome.cartola]
@@ -59,7 +60,7 @@ parameters <- c("home", "mu_att", "mu_def", "sigma_att",
                 "att[1]", "def[1]")
 
 traceplot_m1 <- traceplot(m1_fit, parameters)
-ggsave(filename = "artifacts/traceplot_m1.png", plot = traceplot_m1, 
+ggsave(filename = paste0(path_to_save, "traceplot_m1.png"), plot = traceplot_m1, 
        width = 9.46, height = 6.27, dpi = 300)
 
 y_predict_m1 <- extract(m1_fit, pars = c("y1_tilde", "y2_tilde"))
@@ -84,7 +85,7 @@ cumsum_m1 <- points_per_game_obs_m1 |>
   create_cumsum_points_plot(year = 2019) +
   scale_color_discrete(labels = c("Modelo 1 (Baio, 2010)", "Observado"))
 
-ggsave(filename = "artifacts/cumsum_m1.png", plot = cumsum_m1, 
+ggsave(filename = paste0(path_to_save, "cumsum_m1.png"), plot = cumsum_m1, 
        width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao <- points_per_game_obs_m1 |> 
@@ -92,14 +93,11 @@ pontuacao <- points_per_game_obs_m1 |>
   summarize(score_obs = sum(points_scored_obs), 
             score_est_m1 = sum(points_scored_est_m1))
 
-saveRDS(pontuacao, "artifacts/pontuacao_total_m1.rds")
+saveRDS(pontuacao, paste0(path_to_save, "pontuacao_total_m1.rds"))
 
 ### MSE ----
 
-mse_m1 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
-                                  brasileirao_2019_with_pred$y1_pred_m1),
-                     mse_y2 = mse(brasileirao_2019_with_pred$y2, 
-                                  brasileirao_2019_with_pred$y2_pred_m1))
+mse_m1 <- mse(pontuacao$score_obs,pontuacao$score_est_m1)
 
 ### LOO ----
 
@@ -132,7 +130,7 @@ parameters_m2 <- c("mu", "home", "alpha", "sigma_att",
                    "att[1]", "def[1]")
 
 traceplot_m2 <- traceplot(m2_fit, parameters_m2)
-ggsave(filename = "artifacts/traceplot_m2.png", plot = traceplot_m2, 
+ggsave(filename = paste0(path_to_save, "traceplot_m2.png"), plot = traceplot_m2, 
        width = 9.46, height = 6.27, dpi = 300)
 
 
@@ -159,7 +157,7 @@ cumsum_m2 <- points_per_game_obs_m2 |>
   scale_color_discrete(labels = c("Modelo 2: γ1 = 0, γ2 = 0 (Karlis, 2003)", 
                                   "Observado"))
 
-ggsave(filename = "artifacts/cumsum_m2.png", plot = cumsum_m2, 
+ggsave(filename = paste0(path_to_save, "cumsum_m2.png"), plot = cumsum_m2, 
        width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao_m2 <- points_per_game_obs_m2 |> 
@@ -167,7 +165,7 @@ pontuacao_m2 <- points_per_game_obs_m2 |>
   summarize(score_obs = sum(points_scored_obs), 
             score_est_m2 = sum(points_scored_est_m2))
 
-saveRDS(pontuacao_m2, "artifacts/pontuacao_total_m2.rds")
+saveRDS(pontuacao_m2, paste0(path_to_save, "pontuacao_total_m2.rds"))
 
 # Desempate rebaixamento
 # pontuacao_m2 |> slice_min(score_est_m2, n=4)
@@ -176,10 +174,7 @@ saveRDS(pontuacao_m2, "artifacts/pontuacao_total_m2.rds")
 #   summarize(sum(y1_pred_m2, y2_pred_m2))
 
 ### MSE ----
-mse_m2 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
-                                  brasileirao_2019_with_pred$y1_pred_m2),
-                     mse_y2 = mse(brasileirao_2019_with_pred$y2, 
-                                     brasileirao_2019_with_pred$y2_pred_m2))
+mse_m2 <- mse(pontuacao_m2$score_obs, pontuacao_m2$score_est_m2)
 
 ### LOO and WAIC ----
 
@@ -212,7 +207,8 @@ parameters_m3 <- c("mu", "home", "alpha", "alpha_home[1]", "sigma_att",
                    "att[1]", "def[1]")
 
 traceplot_m3 <- traceplot(m3_fit, parameters_m3, nrow = 5, ncol = 2)
-ggsave(filename = "artifacts/traceplot_m3.png", plot = traceplot_m3, 
+ggsave(filename = paste0(path_to_save, "traceplot_m3.png"), 
+       plot = traceplot_m3, 
        width = 9.46, height = 6.27, dpi = 300)
 
 y_predict_m3 <- extract(m3_fit, pars = c("y1_tilde", "y2_tilde"))
@@ -239,7 +235,8 @@ cumsum_m3 <- points_per_game_obs_m3 |>
   scale_color_discrete(labels = c("Modelo 3: γ1 = 1, γ2 = 0 (Karlis, 2003)", 
                                   "Observado"))
 
-ggsave(filename = "artifacts/cumsum_m3.png", plot = cumsum_m3, 
+ggsave(filename = paste0(path_to_save, "cumsum_m3.png"), 
+       plot = cumsum_m3, 
        width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao_m3 <- points_per_game_obs_m3 |> 
@@ -247,14 +244,16 @@ pontuacao_m3 <- points_per_game_obs_m3 |>
   summarize(score_obs = sum(points_scored_obs), 
             score_est_m3 = sum(points_scored_est_m3))
 
-saveRDS(pontuacao_m3, "artifacts/pontuacao_total_m3.rds")
+saveRDS(pontuacao_m3, paste0(path_to_save, "pontuacao_total_m3.rds"))
 
 ### MSE ----
 
-mse_m3 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
-                                  brasileirao_2019_with_pred$y1_pred_m3),
-                     mse_y2 = mse(brasileirao_2019_with_pred$y2, 
-                                     brasileirao_2019_with_pred$y2_pred_m3))
+# mse_m3 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
+#                                   brasileirao_2019_with_pred$y1_pred_m3),
+#                      mse_y2 = mse(brasileirao_2019_with_pred$y2, 
+#                                      brasileirao_2019_with_pred$y2_pred_m3))
+
+mse_m3 <- mse(pontuacao_m3$score_obs, pontuacao_m3$score_est_m3)
 
 ### LOO and WAIC ----
 
@@ -287,7 +286,7 @@ parameters_m4 <- c("mu", "home", "alpha", "alpha_home[1]",
                    "att_raw[1]", "def_raw[1]", "att[1]", "def[1]")
 
 traceplot_m4 <- traceplot(m4_fit, parameters_m4)
-ggsave(filename = "artifacts/traceplot_m4.png", plot = traceplot_m4, 
+ggsave(filename = paste0(path_to_save, "traceplot_m4.png"), plot = traceplot_m4, 
        width = 9.46, height = 6.27, dpi = 300)
 
 y_predict_m4 <- extract(m4_fit, pars = c("y1_tilde", "y2_tilde"))
@@ -314,7 +313,7 @@ cumsum_m4 <- points_per_game_obs_m4 |>
   scale_color_discrete(labels = c("Modelo 4: γ1 = 1, γ2 = 1 (Karlis, 2003)", 
                                   "Observado"))
 
-ggsave(filename = "artifacts/cumsum_m4.png", plot = cumsum_m4, 
+ggsave(filename = paste0(path_to_save, "cumsum_m4.png"), plot = cumsum_m4, 
        width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao_m4 <- points_per_game_obs_m4 |> 
@@ -322,21 +321,18 @@ pontuacao_m4 <- points_per_game_obs_m4 |>
   summarize(score_obs = sum(points_scored_obs), 
             score_est_m4 = sum(points_scored_est_m4))
 
-saveRDS(pontuacao_m4, "artifacts/pontuacao_total_m4.rds")
+saveRDS(pontuacao_m4, paste0(path_to_save, "pontuacao_total_m4.rds"))
 
 ### MSE ----
 
-mse_m4 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
-                                  brasileirao_2019_with_pred$y1_pred_m4),
-                     mse_y2 = mse(brasileirao_2019_with_pred$y2, 
-                                     brasileirao_2019_with_pred$y2_pred_m4))
+mse_m4 <- mse(pontuacao_m4$score_obs, pontuacao_m4$score_est_m4)
 
 ### LOO and WAIC ----
 
 log_lik_m4 <- extract_log_lik(m4_fit, parameter_name = "log_lik")
 r_eff_m4 <- relative_eff(exp(log_lik_m4), chain_id = rep(1, 2500))
 loo_m4 <- loo(log_lik_m4, r_eff = r_eff_m4)
-waic_m4 <- loo(log_lik_m4)
+waic_m4 <- waic(log_lik_m4)
 
 # Model 5 ----
 
@@ -363,7 +359,7 @@ parameters_m5 <- c("mu", "home", "alpha", "alpha_away[1]", "sigma_att",
 
 traceplot_m5 <- traceplot(m5_fit, parameters_m5, nrow = 5, ncol = 2)
 
-ggsave(filename = "artifacts/traceplot_m5.png", plot = traceplot_m5, 
+ggsave(filename = paste0(path_to_save, "traceplot_m5.png"), plot = traceplot_m5, 
        width = 9.46, height = 6.27, dpi = 300)
 
 y_predict_m5 <- extract(m5_fit, pars = c("y1_tilde", "y2_tilde"))
@@ -389,7 +385,7 @@ cumsum_m5 <- points_per_game_obs_m5 |>
   scale_color_discrete(labels = c("Modelo 5: γ1 = 0, γ2 = 1 (Karlis, 2003)", 
                                   "Observado"))
 
-ggsave(filename = "artifacts/cumsum_m5.png", plot = cumsum_m5, 
+ggsave(filename = paste0(path_to_save, "cumsum_m5.png"), plot = cumsum_m5, 
        width = 9.76, height = 7.37, dpi = 300)
 
 pontuacao_m5 <- points_per_game_obs_m5 |> 
@@ -397,14 +393,11 @@ pontuacao_m5 <- points_per_game_obs_m5 |>
   summarize(score_obs = sum(points_scored_obs), 
             score_est_m5 = sum(points_scored_est_m5))
 
-saveRDS(pontuacao_m5, "artifacts/pontuacao_total_m5.rds")
+saveRDS(pontuacao_m5, paste0(path_to_save, "pontuacao_total_m5.rds"))
 
 ### MSE ----
 
-mse_m5 <- data.frame(mse_y1 = mse(brasileirao_2019_with_pred$y1, 
-                                  brasileirao_2019_with_pred$y1_pred_m5),
-                     mse_y2 = mse(brasileirao_2019_with_pred$y2, 
-                                  brasileirao_2019_with_pred$y2_pred_m5))
+mse_m5 <- mse(pontuacao_m5$score_obs, pontuacao_m5$score_est_m5)
 
 ### LOO and WAIC ----
 
@@ -452,7 +445,11 @@ pontuacao_all <- points_per_game_obs_all_models |>
             score_est_m4 = sum(points_scored_est_m4),
             score_est_m5 = sum(points_scored_est_m5))
 
-saveRDS(pontuacao_all, "artifacts/pontuacao_all.rds")
+pontuacao_all |> 
+  select(contains("est")) |> 
+  map_df(mse, actual = pontuacao_all$score_obs)
+
+saveRDS(pontuacao_all, paste0(path_to_save, "pontuacao_all.rds"))
 
 cumsum_all <- points_per_game_obs_all_models |> 
   pivot_longer(cols = c(points_scored_obs, 
@@ -469,10 +466,80 @@ cumsum_all <- points_per_game_obs_all_models |>
                                   "Modelo 5: γ1 = 0, γ2 = 1 (Karlis, 2003)", 
                                   "Observado"))
 
-ggsave(filename = "artifacts/cumsum_all.png", plot = cumsum_all, 
+ggsave(filename = paste0(path_to_save, "cumsum_all.png"), plot = cumsum_all, 
        width = 9.76, height = 7.37, dpi = 300)
 
 mse_models <- rbind(mse_m1, mse_m2, mse_m3, mse_m4, mse_m5)
 
 loo_compare_models <- loo_compare(loo_m1, loo_m2, 
                                   loo_m3, loo_m4, loo_m5)
+
+# Mixture ----
+
+brasileirao_2019_list_m6 <- list(
+  G = nrow(brasileirao_2019),
+  T = 20,
+  C = 3,
+  h = brasileirao_2019$h,
+  a = brasileirao_2019$a,
+  y1 = brasileirao_2019$y1,
+  y2 = brasileirao_2019$y2
+)
+
+m6 <- stan_model(file = "models/modelo3-mixture-rascunho4.stan", 
+                 model_name = "model6-mixture")
+
+m6_fit <- sampling(object = m6, 
+                   data = brasileirao_2019_list_m6, 
+                   chains = 2, 
+                   thin = 5,
+                   iter = 10000)
+
+shinystan::launch_shinystan(m6_fit)
+
+parameters <- c("home", "mu_att", "mu_def", "sigma_att", 
+                "sigma_def", "att_raw[1]", "def_raw[3]", 
+                "att[1]", "def[3]", "pi_att[1, 1]", "pi_def[3, 1]")
+
+traceplot_m6 <- traceplot(m6_fit, parameters)
+
+y_predict_m6 <- extract(m6_fit, pars = c("y1_tilde", "y2_tilde"))
+y_predict_m6_df <- data.frame(y1_pred_m6 = y_predict_m6$y1_tilde[1,], 
+                              y2_pred_m6 = y_predict_m6$y2_tilde[1,])
+
+brasileirao_2019_m6 <- cbind(brasileirao_2019, y_predict_m6_df)
+
+score_brasileirao_2019_m6_pred <- 
+  get_team_points_per_game(data = brasileirao_2019_m6, 
+                           y1 = quo(y1_pred_m6), 
+                           y2 = quo(y2_pred_m6))
+
+points_per_game_obs_m6 <- merge(score_brasileirao_2019, 
+                                score_brasileirao_2019_m6_pred, 
+                                by = c("game_id", "team_id", "team_name"), 
+                                suffixes = c("_obs", "_est_m6")) 
+
+points_per_game_obs_m6 |> 
+  pivot_longer(cols = c(points_scored_obs, points_scored_est_m6)) |> 
+  create_cumsum_points_plot(year = 2019) +
+  scale_color_discrete(labels = c("Modelo 6: Mistura (Baio, 2010)", 
+                                  "Observado"))
+
+pontuacao_m6 <- points_per_game_obs_m6 |> 
+  group_by(team_name) |> 
+  summarize(score_obs = sum(points_scored_obs), 
+            score_est_m6 = sum(points_scored_est_m6))
+
+mse_m6 <- mse(pontuacao_m6$score_obs, pontuacao_m6$score_est_m6)
+
+log_lik_m6 <- extract_log_lik(m6_fit, parameter_name = "log_lik")
+r_eff_m6 <- relative_eff(exp(log_lik_m6), chain_id = rep(1, 2500))
+loo_m6 <- loo(log_lik_m6, r_eff = r_eff_m6)
+waic_m5 <- waic(log_lik_m5)
+
+points_per_game_obs_m6 |> 
+  group_by(team_name) |> 
+  summarize(score_obs = sum(points_scored_obs), 
+            score_est_m6 = sum(points_scored_est_m6))
+
+
