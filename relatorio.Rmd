@@ -28,7 +28,7 @@ Modelos estatísticos podem ser aplicados em diferentes áreas do conhecimento. 
 
 # 2. Modelos 
 
-Para o problema de contagem do número de gols em uma partida, o modelo mais comum é baseado na distribuição de Poisson. Essa distribuição é discreta, representando o número de eventos ocorridos em um intervalo de tempo. Uma das limitações dela é que sua média $\lambda$ e variância são iguais, portanto se há uma superdispersão nos dados, o modelo pode não ser tão apropriado. Todos os modelos que serão apresentados aqui são baseados nessa distribuição e ajustados aos dados do Campeonato Brasileiro, popularmente conhecido como Brasileirão, do ano de 2019.
+Para o problema de contagem do número de gols em uma partida, o modelo mais comum é baseado na distribuição de Poisson. Essa distribuição é discreta, representando o número de eventos ocorridos em um intervalo de tempo. Uma das limitações dela é que sua média $\lambda$ e variância são iguais, portanto se há uma superdispersão nos dados, o modelo pode não ser tão apropriado. Todos os modelos que serão apresentados aqui são baseados nessa distribuição e ajustados aos dados do Campeonato Brasileiro ou "Brasileirão" do ano de 2019.
 
 ## 2.1 Modelo 1
 
@@ -135,7 +135,8 @@ O dados foram disponibilizados por @dados_brasileirao no Github, com o seguinte 
 df <- read_rds("/home/mariana/Documents/pessoal/monografia/soccer-models/dataframe_head.rds")
 
 kable(df, booktabs = T) |> 
-  kable_styling(position = "center", latex_options = "hold_position")
+  kable_styling(position = "center", 
+                latex_options = "hold_position")
 ```
 
 As colunas _home_team_index_ e _away_team_index_ foram criadas atribuindo um valor inteiro ordinal para cada time, seguindo a notação do modelo.
@@ -145,39 +146,74 @@ Comparando a pontuação **acumulada** ao longo do campeonato observada e a pont
 ![Pontuação acumulada - Modelo 1](artifacts/2019/cumsum_m1.png)
 Santos foi time com maior pontuação atribuída pelo modelo (78 pontos), estimando bem próximo da pontuação obtida e, assim, sendo o campeão segundo o modelo. Porém, o campeão de 2019 foi o Flamengo, que ficou em segundo lugar na pontuação estimada. Para o Fluminense, o erro foi de apenas 1 ponto. Em contrapartida, há estimativas subestimadas para Corinthians e Ceará.
 
+Os efeitos de ataque e defesa são interpretados com base na referência, definida anteriormente como o último time pelo seu índice. A última equipe é o Fortaleza.
 
 ```{r}
-df <- read_rds("artifacts/2019/summary_m1.rds")
+df <- read_rds("artifacts/2019/summary_m1.rds") 
+home_eff <- df |> filter(variable == "home")
+df <- df |> filter(variable != "home")
 map_teams <- read_rds("artifacts/2019/index_teams.rds")
 df <- cbind(df, map_teams) 
 
-df <- df |> 
+df[1:20, ] |> 
   select(home_team_name, mean, median, sd, q5, q95) |> 
   rename("Time" = home_team_name,
          "Média" = mean,
          "Mediana" = median, 
          "Desvio-padrão" = sd,
          "5%" = q5,
-         "95%" = q95)
-
-knitr::kable(
-  df[1:20,],
-  digits = 3,
-  caption = 'Efeito de ataque de cada time, estimado pelo Modelo 1 ',
-  booktabs = TRUE) |> 
-  kable_styling(position = "center", 
-                latex_options = "hold_position")
-
-knitr::kable(
-  df[21:40,],
-  digits = 3,
-  caption = 'Efeito de defesa de cada time, estimado pelo Modelo 1 ',
-  booktabs = TRUE) |> 
-  kable_styling(position = "center", 
+         "95%" = q95) |>  
+kable(digits = 3, booktabs = T, caption = "Efeitos de ataque estimados - Modelo 1") |> 
+  kable_styling(font_size = 9, 
+                position = "center", 
                 latex_options = "hold_position")
 ```
 
-Os efeitos de ataque e defesa são interpretados com base na referência, definida anteriormente como o último time pelo seu índice. A última equipe é o Fortaleza.
+Flamengo é o time com o maior efeito de ataque em relação a linha de base Fortaleza, tendo uma média a posteriori de 0.546 e 90% de probabilidade da média a posteriori do ataque estar entre 0.30 e 0.794. Já o Cruzeiro apresenta um efeito de ataque negativo e seu intervalo de credibilidade de 90% é [-0.767; -0.124] e tem um menor efeito de fazer gols numa partida.
+
+```{r}
+df <- read_rds("artifacts/2019/summary_m1.rds") 
+df <- df |> filter(variable != "home")
+map_teams <- read_rds("artifacts/2019/index_teams.rds")
+df <- cbind(df, map_teams) 
+
+df[21:40, ] |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |>
+  kable(booktabs = T, digits = 3, 
+        caption = "Efeitos de defesa estimados - Modelo 1") |> 
+  kable_styling(font_size = 9, 
+                position = "center", 
+                latex_options = "hold_position")
+```
+
+Para o efeito de defesa, os times com maior média apresentam maior propensão de conceder gols, tais como CSA e Avaí, dois dos piores do campeonato.
+
+```{r}
+df <- read_rds("artifacts/2019/summary_m1.rds") 
+df |> 
+  filter(variable == "home") |> 
+  select(variable, mean, median, sd, q5, q95) |> 
+  rename("Parâmetro" = variable,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |> 
+  kable(booktabs = T, 
+        digits = 3, 
+        caption = "Efeito de jogar em casa - Modelo 1") |> 
+  kable_styling(font_size = 9, 
+                position = "center", 
+                latex_options = "hold_position")
+```
+
+Conforme o esperado, o efeito de jogar em casa é positivo e grande, com intervalo de credibilidade de 90% entre 0.299 e 0.53.
 
 ## 2.2 Modelo 2
 
@@ -255,6 +291,37 @@ Assim como o primeiro modelo, o modelo 2 foi ajustado para o Campeonato Brasilei
 
 ![Pontuação acumulada - Modelo 2](artifacts/2019/cumsum_m2.png)
 Santos e Palmeiras tem curvas ótimas da pontuação acumulada no campeonato. Algumas curvas vão se afastando ao longo da competição, como nota-se o Flamengo, São Paulo e Chapecoense.
+
+```{r}
+df <- read_rds("artifacts/2019/summary_m2.rds")
+map_teams <- read_rds("artifacts/2019/index_teams.rds")
+df <- cbind(df, map_teams) 
+
+df <- df |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95)
+
+knitr::kable(
+  df[1:20,],
+  digits = 3,
+  caption = 'Efeito de ataque de cada time, estimado pelo Modelo 2',
+  booktabs = TRUE) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position")
+
+knitr::kable(
+  df[21:40,],
+  digits = 3,
+  caption = 'Efeito de defesa de cada time, estimado pelo Modelo 2',
+  booktabs = TRUE) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position")
+```
 
 ## 2.3 Modelo 3
 
@@ -398,11 +465,14 @@ A coluna looic indica o valor obtido para cada modelo. Já a coluna elpd_diff é
 
 # 4. Outros modelos
 
-Um possível problema com modelos hierárquicos é um efeito de encolhimento, no qual observações extremas são arrastadas para a média global. Esse efeito faz com que equipes com um desempenho muito bom, que estão no topo da tabela, têm estimativas conservadoras e os times que estão nas últimas colocações são superestimados. O encolhimento é um possível problema do modelo 1 e @baio_bayesian_2010 recomenda um modelo de mistura com três componentes para contornar esse efeito.
-
-Uma outra possibilidade de mistura é um modelo inflado de zeros.
+Um possível problema com modelos hierárquicos é um efeito de encolhimento, no qual observações extremas são arrastadas para a média global. Esse efeito faz com que equipes com um desempenho muito bom, que estão no topo da tabela, têm estimativas conservadoras e os times que estão nas últimas colocações são superestimados. O encolhimento é um possível problema do modelo 1 e @baio_bayesian_2010 recomenda um modelo de mistura com três componentes para contornar esse efeito. Outra possibilidade é a Binomial Negativa, principalmente para o caso que temos uma variância maior que a média, o problema da superdispersão. 
 
 # 5. Conclusão
+
+Foi observado o ajuste de 6 modelos para os dados do Campeonato Brasileiro 2019. O melhor ajustado, seguindo o critério de qualidade de ajuste LOO-CV, é o modelo hierárquico proposto por @baio_bayesian_2010. 
+
+Há ainda a possibilidade de ajuste para outros anos, como 2020 e 2021, para ver o comportamento do modelo diante de novos times. Uma hipótese levantada e analisada por @benz_estimating_2020 é que durante a pandemia o efeito de jogar em casa sofreu uma mudança, considerando a falta de público nos jogos desse período. É possível também a aplicação dos modelos apresentados para outros esportes, como vôlei [@andrea_volley] e polo aquático [@karlis_analysis_2003].
+
 # 6. Referências
 # 7. Apêndice
 

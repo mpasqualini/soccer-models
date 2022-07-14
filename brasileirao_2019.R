@@ -77,8 +77,8 @@ traceplot_m1 <- traceplot(m1_fit, parameters)
 #       height = 6.27, 
 #       dpi = 300)
 
-summary_m1 <- summarize_draws_param(m1_fit, params_to_summarize)
-#saveRDS(summary_m1, file = paste0(path_to_save, "summary_m1.rds"))
+summary_m1 <- summarize_draws_param(m1_fit, c(params_to_summarize, "home"))
+saveRDS(summary_m1, file = paste0(path_to_save, "summary_m1.rds"))
 
 y_predict_m1 <- extract(m1_fit, pars = c("y1_tilde", "y2_tilde"))
 y_predict_m1_df <- data.frame(y1_pred_m1 = y_predict_m1$y1_tilde[1,], 
@@ -154,6 +154,7 @@ traceplot_m2 <- traceplot(m2_fit, parameters_m2)
 #       dpi = 300)
 
 summary_m2 <- summarize_draws_param(m2_fit, params_to_summarize)
+#summary_m1 <- summarize_draws_param(m1_fit, c(params_to_summarize, "home"))
 #saveRDS(summary_m2, file = paste0(path_to_save, "summary_m2.rds"))
 
 y_predict_m2 <- extract(m2_fit, pars = c("y1_tilde", "y2_tilde"))

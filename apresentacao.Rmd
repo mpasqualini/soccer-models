@@ -12,14 +12,14 @@ header-includes:
     - \usepackage{array}
     - \usepackage{multirow}
     - \usepackage{wrapfig}
-    - \usepackage{float}
     - \usepackage{colortbl}
     - \usepackage{pdflscape}
-    - \usepackage{tabu}
     - \usepackage{threeparttable}
     - \setbeamerfont{caption}{size=\tiny}
     - \setbeamerfont{caption name}{size=\tiny}
     - \usepackage[brazil]{babel}
+    - \usepackage[skip=0pt]{caption}
+    - \captionsetup{skip=0pt,belowskip=0pt, aboveskip=0pt}
 ---
 
 ```{r setup, include=FALSE}
@@ -39,7 +39,7 @@ Desde a década de 80, modelos estatísticos são aplicados em problemas relacio
 
 ## Introdução 
 
-A distribuição de Poisson é uma das mais utilizadas para esse tipo de problema. Serão apresentados 5 modelos propostos na literatura para prever o número de gols nas partidas do Campeonato Brasileiro dos anos 2019.
+A distribuição de Poisson é uma das mais utilizadas para esse tipo de problema. Serão apresentados 6 modelos propostos na literatura para prever o número de gols nas partidas do Campeonato Brasileiro dos anos 2019.
 
 Os modelos foram implementados no Stan, um software para amostrar modelos bayesianos, juntamente com o R.
 
@@ -65,7 +65,7 @@ Os índices $h(g)$ representa o time que está jogando em casa no g-ésimo jogo 
 
 ## Priori
 
-A escolha das distribuições a priori do parâmetros se basearam no artigo e foram adaptadas para as parametrizações e particularidades do Stan.
+A escolha das distribuições a priori dos parâmetros foi baseada no artigo e foram adaptadas para o Stan.
 
 Parâmetros
 
@@ -77,7 +77,7 @@ Hiperparâmetros
 
 - $\mu_{att} \sim Normal(0, 10)$
 - $\mu_{def} \sim Normal(0, 10)$
-- $\sigma_{att} \sim Cauchy(0, 2.5)$
+- $\sigma_{att} \sim Cauchy(0, 2.5)$^[@gelman_prior]
 - $\sigma_{def} \sim Cauchy(0, 2.5)$
 
 ## 
@@ -123,7 +123,9 @@ Já os times rebaixados foram:
 - Referência: Fortaleza
 
 ```{r}
-df <- read_rds("artifacts/2019/summary_m1.rds")
+df <- read_rds("artifacts/2019/summary_m1.rds") 
+home_eff <- df |> filter(variable == "home")
+df <- df |> filter(variable != "home")
 map_teams <- read_rds("artifacts/2019/index_teams.rds")
 df <- cbind(df, map_teams) 
 
@@ -151,6 +153,17 @@ df[21:40, ] |>
   filter(Time %in% c("Flamengo", "Palmeiras", "CSA", "Ceará", "Fluminense")) |> 
   kable(booktabs = T, digits = 3) |> 
   kable_styling(font_size = 9)
+
+home_eff |> 
+  select(variable, mean, median, sd, q5, q95) |> 
+  rename("Parâmetro" = variable,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |> 
+  kable(booktabs = T, digits = 3) |> 
+  kable_styling(font_size = 9)
 ```
 
 
@@ -165,10 +178,10 @@ Então, as variáveis aleatórias $X = X_1 + X_3$ e $Y = X_2 + X_3$ seguem conju
 Utilizando o resultado anterior, podemos definir:
 
 $$
-X_i \sim Poisson(\lambda_{1i})
+X_i \sim Poisson(\lambda_{1i} + \lambda_{3i})
 $$
 $$
-Y_i \sim Poisson(\lambda_{2i})
+Y_i \sim Poisson(\lambda_{2i} + \lambda_{3i})
 $$
 com $i$ indicando o i-ésimo jogo. Daí, temos os preditores lineares definidos como:
 
@@ -246,17 +259,9 @@ df[21:40, ] |>
   kable_styling(font_size = 9)
 ```
 
-## Ajuste 
-
-![](artifacts/2019/traceplot_m2.png)
-
 ## Modelo 3 
 
 Baseado na definição do modelo 2, o modelo 3 é definido com $\gamma_1 = 1, \gamma_2 = 0$, com parâmetro de correlação $\lambda_{3i}$ sendo a soma do efeito **fixo** $\alpha$ mais um efeito que depende do time **mandante**.
-
-## Modelo 3
-
-![](artifacts/2019/traceplot_m3.png)
 
 ## Ajuste
 ![](artifacts/2019/cumsum_m3.png) 
@@ -405,6 +410,7 @@ read_rds("artifacts/2019/loo_compare_all_models.rds") |>
 - Binomial negativa, para os casos de superdispersão
 - @benz_estimating_2020 analisa o efeito de jogar em casa durante a pandemia
 - Campeonatos de outros anos
+- Outros esportes, como vôlei [@andrea_volley]
 - Limitações dos modelos baseados na Poisson bivariada
 - Melhoria e correção do modelo de mistura
 
