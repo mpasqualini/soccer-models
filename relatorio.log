@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.21)  13 JUL 2022 22:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.21)  14 JUL 2022 01:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -336,47 +336,64 @@ LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Ccount=\count273
 \calc@Cskip=\skip59
-) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2020/02/14 3.40 The Babel package
+(/usr/share/texlive/texmf-dist/tex/generic/babel/switch.def
+File: switch.def 2020/02/14 3.40 Babel switching mechanism
+) (/usr/share/texlive/texmf-dist/tex/generic/babel-portuges/portuges.ldf
+Language: portuges 2008/03/18 v1.2q Portuguese support from the babel system
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2020/02/14 3.40 Babel common definitions
+\babel@savecnt=\count274
+\U@D=\dimen161
+(/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count275
+)
+Package babel Info: \l@brazil = using hyphenrules for portuguese
+(babel)             (\language18) on input line 113.
+Package babel Info: Making " an active character on input line 145.
+)) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen161
-\lightrulewidth=\dimen162
-\cmidrulewidth=\dimen163
-\belowrulesep=\dimen164
-\belowbottomsep=\dimen165
-\aboverulesep=\dimen166
-\abovetopsep=\dimen167
-\cmidrulesep=\dimen168
-\cmidrulekern=\dimen169
-\defaultaddspace=\dimen170
-\@cmidla=\count274
-\@cmidlb=\count275
-\@aboverulesep=\dimen171
-\@belowrulesep=\dimen172
-\@thisruleclass=\count276
-\@lastruleclass=\count277
-\@thisrulewidth=\dimen173
+\heavyrulewidth=\dimen162
+\lightrulewidth=\dimen163
+\cmidrulewidth=\dimen164
+\belowrulesep=\dimen165
+\belowbottomsep=\dimen166
+\aboverulesep=\dimen167
+\abovetopsep=\dimen168
+\cmidrulesep=\dimen169
+\cmidrulekern=\dimen170
+\defaultaddspace=\dimen171
+\@cmidla=\count276
+\@cmidlb=\count277
+\@aboverulesep=\dimen172
+\@belowrulesep=\dimen173
+\@thisruleclass=\count278
+\@lastruleclass=\count279
+\@thisrulewidth=\dimen174
 ) (/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \LTleft=\skip60
 \LTright=\skip61
 \LTpre=\skip62
 \LTpost=\skip63
-\LTchunksize=\count278
-\LTcapwidth=\dimen174
+\LTchunksize=\count280
+\LTcapwidth=\dimen175
 \LT@head=\box47
 \LT@firsthead=\box48
 \LT@foot=\box49
 \LT@lastfoot=\box50
-\LT@cols=\count279
-\LT@rows=\count280
-\c@LT@tables=\count281
-\c@LT@chunks=\count282
+\LT@cols=\count281
+\LT@rows=\count282
+\c@LT@tables=\count283
+\c@LT@chunks=\count284
 \LT@p@ftn=\toks24
 ) (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
 Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
-\col@sep=\dimen175
+\col@sep=\dimen176
 \ar@mcellbox=\box51
-\extrarowheight=\dimen176
+\extrarowheight=\dimen177
 \NC@list=\toks25
 \extratabsurround=\skip64
 \backup@length=\skip65
@@ -384,19 +401,19 @@ Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
 ) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2019/05/31 v2.5 Span multiple rows of a table
 \multirow@colwidth=\skip66
-\multirow@cntb=\count283
+\multirow@cntb=\count285
 \multirow@dima=\skip67
-\bigstrutjot=\dimen177
+\bigstrutjot=\dimen178
 ) (/usr/share/texlive/texmf-dist/tex/latex/wrapfig/wrapfig.sty
-\wrapoverhang=\dimen178
-\WF@size=\dimen179
-\c@WF@wrappedlines=\count284
+\wrapoverhang=\dimen179
+\WF@size=\dimen180
+\c@WF@wrappedlines=\count286
 \WF@box=\box53
 \WF@everypar=\toks26
 Package: wrapfig 2003/01/31  v 3.6
 ) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count285
+\c@float@type=\count287
 \float@exts=\toks27
 \float@box=\box54
 \@float@everytoks=\toks28
@@ -417,25 +434,25 @@ mediate FMi
 (/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box56
-\sift@deathcycles=\count286
-\@vwid@loff=\dimen180
-\@vwid@roff=\dimen181
+\sift@deathcycles=\count288
+\@vwid@loff=\dimen181
+\@vwid@roff=\dimen182
 )
-\c@taburow=\count287
-\tabu@nbcols=\count288
-\tabu@cnt=\count289
-\tabu@Xcol=\count290
-\tabu@alloc=\count291
-\tabu@nested=\count292
-\tabu@target=\dimen182
-\tabu@spreadtarget=\dimen183
-\tabu@naturalX=\dimen184
-\tabucolX=\dimen185
-\tabu@Xsum=\dimen186
-\extrarowdepth=\dimen187
-\abovetabulinesep=\dimen188
-\belowtabulinesep=\dimen189
-\tabustrutrule=\dimen190
+\c@taburow=\count289
+\tabu@nbcols=\count290
+\tabu@cnt=\count291
+\tabu@Xcol=\count292
+\tabu@alloc=\count293
+\tabu@nested=\count294
+\tabu@target=\dimen183
+\tabu@spreadtarget=\dimen184
+\tabu@naturalX=\dimen185
+\tabucolX=\dimen186
+\tabu@Xsum=\dimen187
+\extrarowdepth=\dimen188
+\abovetabulinesep=\dimen189
+\belowtabulinesep=\dimen190
+\tabustrutrule=\dimen191
 \tabu@thebody=\toks30
 \tabu@footnotes=\toks31
 \tabu@box=\box57
@@ -459,20 +476,20 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \UL@hyphenbox=\box63
 \UL@skip=\skip71
 \UL@hook=\toks32
-\UL@height=\dimen191
-\UL@pe=\count293
-\UL@pixel=\dimen192
+\UL@height=\dimen192
+\UL@pe=\count295
+\UL@pixel=\dimen193
 \ULC@box=\box64
 Package: ulem 2019/11/18
-\ULdepth=\dimen193
+\ULdepth=\dimen194
 ) (/usr/share/texlive/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen194
-\c@nlinenum=\count294
+\rotheadsize=\dimen195
+\c@nlinenum=\count296
 \TeXr@lab=\toks33
 ) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count295
+\l__kernel_color_stack_int=\count297
 \l__pdf_internal_box=\box65
 ) (./relatorio.aux
 
@@ -481,32 +498,32 @@ LaTeX Warning: Label `tab:unnamed-chunk-2' multiply defined.
 )
 \openout1 = `relatorio.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 108.
-LaTeX Font Info:    ... okay on input line 108.
-LaTeX Info: Redefining \microtypecontext on input line 108.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 109.
+LaTeX Font Info:    ... okay on input line 109.
+LaTeX Info: Redefining \microtypecontext on input line 109.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `basictext'.
-LaTeX Info: Redefining \showhyphens on input line 108.
+LaTeX Info: Redefining \showhyphens on input line 109.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -515,16 +532,16 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (RS)
 ) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count296
-\scratchdimen=\dimen195
+\scratchcounter=\count298
+\scratchdimen=\dimen196
 \scratchbox=\box66
-\nofMPsegments=\count297
-\nofMParguments=\count298
+\nofMPsegments=\count299
+\nofMParguments=\count300
 \everyMPshowfont=\toks34
-\MPscratchCnt=\count299
-\MPscratchDim=\dimen196
-\MPnumerator=\count300
-\makeMPintoPDFobject=\count301
+\MPscratchCnt=\count301
+\MPscratchDim=\dimen197
+\MPnumerator=\count302
+\makeMPintoPDFobject=\count303
 \everyMPtoPDFconversion=\toks35
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -535,7 +552,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box67
-Package hyperref Info: Link coloring OFF on input line 108.
+Package hyperref Info: Link coloring OFF on input line 109.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
@@ -543,11 +560,11 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count302
+\c@section@level=\count304
 )
-LaTeX Info: Redefining \ref on input line 108.
-LaTeX Info: Redefining \pageref on input line 108.
-LaTeX Info: Redefining \nameref on input line 108.
+LaTeX Info: Redefining \ref on input line 109.
+LaTeX Info: Redefining \pageref on input line 109.
+LaTeX Info: Redefining \nameref on input line 109.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -583,39 +600,39 @@ LaTeX Info: Redefining \nameref on input line 108.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-10.
+11.
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-10.
+11.
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-110.
+111.
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-110.
+111.
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 110.
+(Font)              <12> on input line 111.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 110.
+(Font)              <8> on input line 111.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 110.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 110
+(Font)              <6> on input line 111.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 111
 .
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 110
+LaTeX Font Info:    Trying to load font information for U+msb on input line 111
 .
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -658,204 +675,222 @@ has been already used, duplicate ignored
                                                   \fi \fi 
 l.291 
        <./artifacts/sim-modelo1-22-06.png>]
-</home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m1.p
-ng, id=47, 705.3552pt x 532.6299pt>
-File: /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum
-_m1.png Graphic file (type png)
-<use /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_
-m1.png>
-Package pdftex.def Info: /home/mariana/Documents/pessoal/monografia/soccer-mode
-ls/artifacts/cumsum_m1.png  used on input line 330.
+<artifacts/2019/cumsum_m1.png, id=47, 705.3552pt x 532.6299pt>
+File: artifacts/2019/cumsum_m1.png Graphic file (type png)
+<use artifacts/2019/cumsum_m1.png>
+Package pdftex.def Info: artifacts/2019/cumsum_m1.png  used on input line 328.
 (pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+Underfull \hbox (badness 10000) in paragraph at lines 328--334
+[][]
+ []
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<artifacts/traceplot_m1.png, id=48, 683.6742pt x 452.892pt>
-File: artifacts/traceplot_m1.png Graphic file (type png)
-<use artifacts/traceplot_m1.png>
-Package pdftex.def Info: artifacts/traceplot_m1.png  used on input line 448.
-(pdftex.def)             Requested size: 469.76405pt x 311.18971pt.
 [4 </home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model1-t
-raceplot-sim.png (PNG copy)>] [5pdfTeX warning (ext4): destination with the sam
-e identifier (name{figure.2}) has been already used, duplicate ignored
+raceplot-sim.png (PNG copy)>]
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.466 
-       </home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cums
-um_m1.png (PNG copy)>] [6pdfTeX warning (ext4): destination with the same ident
-ifier (name{figure.3}) has been already used, duplicate ignored
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.466 
-       <./artifacts/traceplot_m1.png (PNG copy)>]
 
-LaTeX Warning: Text page 7 contains only floats.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[7pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
+[5 <./artifacts/2019/cumsum_m1.png (PNG copy)>]
+
+LaTeX Warning: Text page 6 contains only floats.
+
+[6pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
 as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.466 
+l.446 
       pdfTeX warning (ext4): destination with the same identifier (name{table.2
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.466 
-      ] [8]
-<artifacts/sim-modelo2-27-06.png, id=80, 544.28343pt x 257.46187pt>
+l.446 
+      ] [7]
+<artifacts/sim-modelo2-27-06.png, id=75, 544.28343pt x 257.46187pt>
 File: artifacts/sim-modelo2-27-06.png Graphic file (type png)
 <use artifacts/sim-modelo2-27-06.png>
-Package pdftex.def Info: artifacts/sim-modelo2-27-06.png  used on input line 56
-5.
+Package pdftex.def Info: artifacts/sim-modelo2-27-06.png  used on input line 52
+2.
 (pdftex.def)             Requested size: 469.75226pt x 222.20644pt.
-File: /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model1
--traceplot-sim.png Graphic file (type png)
-<use /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model1-
-traceplot-sim.png>
-Package pdftex.def Info: /home/mariana/Documents/pessoal/monografia/soccer-mode
-ls/artifacts/model1-traceplot-sim.png  used on input line 577.
-(pdftex.def)             Requested size: 469.76813pt x 280.39906pt.
-[9]
-</home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m2.p
-ng, id=91, 705.3552pt x 532.6299pt>
-File: /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum
-_m2.png Graphic file (type png)
-<use /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_
-m2.png>
-Package pdftex.def Info: /home/mariana/Documents/pessoal/monografia/soccer-mode
-ls/artifacts/cumsum_m2.png  used on input line 589.
-(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
-[10pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
- has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.591 \end{figure}
-                   <./artifacts/sim-modelo2-27-06.png>]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-</home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m3.p
-ng, id=100, 705.3552pt x 532.6299pt>
-File: /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum
-_m3.png Graphic file (type png)
-<use /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_
-m3.png>
-Package pdftex.def Info: /home/mariana/Documents/pessoal/monografia/soccer-mode
-ls/artifacts/cumsum_m3.png  used on input line 648.
-(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
-[11pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
- has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.662 
-       </home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cums
-um_m2.png (PNG copy)>] [12pdfTeX warning (ext4): destination with the same iden
-tifier (name{figure.6}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.662 
-       </home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cums
-um_m3.png (PNG copy)>]
-</home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m4.p
-ng, id=115, 705.3552pt x 532.6299pt>
-File: /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum
-_m4.png Graphic file (type png)
-<use /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_
-m4.png>
-Package pdftex.def Info: /home/mariana/Documents/pessoal/monografia/soccer-mode
-ls/artifacts/cumsum_m4.png  used on input line 665.
-(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
-</home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m5.p
-ng, id=116, 705.3552pt x 532.6299pt>
-File: /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum
-_m5.png Graphic file (type png)
-<use /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_
-m5.png>
-Package pdftex.def Info: /home/mariana/Documents/pessoal/monografia/soccer-mode
-ls/artifacts/cumsum_m5.png  used on input line 679.
-(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
-[13] [14pdfTeX warning (ext4): destination with the same identifier (name{figur
-e.7}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.712   \(
-          \pi_{att} \sim Dirichlet([1, 1, 1])\) </home/mariana/Documents/pessoa
-l/monografia/soccer-models/artifacts/cumsum_m4.png (PNG copy)>] [15pdfTeX warni
-ng (ext4): destination with the same identifier (name{figure.8}) has been alrea
-dy used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.712   \(
-          \pi_{att} \sim Dirichlet([1, 1, 1])\) </home/mariana/Documents/pessoa
-l/monografia/soccer-models/artifacts/cumsum_m5.png (PNG copy)>] [16]
-</home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_all.
-png, id=145, 705.3552pt x 532.6299pt>
-File: /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum
-_all.png Graphic file (type png)
-<use /home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_
-all.png>
-Package pdftex.def Info: /home/mariana/Documents/pessoal/monografia/soccer-mode
-ls/artifacts/cumsum_all.png  used on input line 800.
+<artifacts/2019/cumsum_m2.png, id=76, 705.3552pt x 532.6299pt>
+File: artifacts/2019/cumsum_m2.png Graphic file (type png)
+<use artifacts/2019/cumsum_m2.png>
+Package pdftex.def Info: artifacts/2019/cumsum_m2.png  used on input line 536.
 (pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 800--805
+Underfull \hbox (badness 10000) in paragraph at lines 536--540
 [][]
  []
 
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 8
-27.
-(/usr/share/texmf/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-832.
-(/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
-File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [17 </home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsu
-m_all.png (PNG copy)>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 910.
-[18pdfTeX warning (ext4): destination with the same identifier (name{table.3}) 
+[8pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.910 \end{document}
-                    ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 910.
+l.540 
+       <./artifacts/sim-modelo2-27-06.png>]
+<artifacts/2019/cumsum_m3.png, id=86, 705.3552pt x 532.6299pt>
+File: artifacts/2019/cumsum_m3.png Graphic file (type png)
+<use artifacts/2019/cumsum_m3.png>
+Package pdftex.def Info: artifacts/2019/cumsum_m3.png  used on input line 550.
+(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 550--555
+[][]
+ []
+
+[9 <./artifacts/2019/cumsum_m2.png (PNG copy)>]
+<artifacts/2019/cumsum_m4.png, id=93, 705.3552pt x 532.6299pt>
+File: artifacts/2019/cumsum_m4.png Graphic file (type png)
+<use artifacts/2019/cumsum_m4.png>
+Package pdftex.def Info: artifacts/2019/cumsum_m4.png  used on input line 567.
+(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 567--572
+[][]
+ []
+
+[10 <./artifacts/2019/cumsum_m3.png (PNG copy)>]
+<artifacts/2019/cumsum_m5.png, id=100, 705.3552pt x 532.6299pt>
+File: artifacts/2019/cumsum_m5.png Graphic file (type png)
+<use artifacts/2019/cumsum_m5.png>
+Package pdftex.def Info: artifacts/2019/cumsum_m5.png  used on input line 581.
+(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 581--587
+[][]
+ []
+
+[11 <./artifacts/2019/cumsum_m4.png (PNG copy)>] [12 <./artifacts/2019/cumsum_m
+5.png (PNG copy)>]
+<artifacts/2019/traceplot_m6.png, id=114, 683.6742pt x 452.892pt>
+File: artifacts/2019/traceplot_m6.png Graphic file (type png)
+<use artifacts/2019/traceplot_m6.png>
+Package pdftex.def Info: artifacts/2019/traceplot_m6.png  used on input line 67
+2.
+(pdftex.def)             Requested size: 469.76405pt x 311.18971pt.
+[13]
+<artifacts/2019/cumsum_m6.png, id=123, 705.3552pt x 532.6299pt>
+File: artifacts/2019/cumsum_m6.png Graphic file (type png)
+<use artifacts/2019/cumsum_m6.png>
+Package pdftex.def Info: artifacts/2019/cumsum_m6.png  used on input line 682.
+(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 682--690
+[]
+ []
+
+[14 <./artifacts/2019/traceplot_m6.png (PNG copy)>]
+<artifacts/2019/cumsum_all.png, id=129, 705.3552pt x 532.6299pt>
+File: artifacts/2019/cumsum_all.png Graphic file (type png)
+<use artifacts/2019/cumsum_all.png>
+Package pdftex.def Info: artifacts/2019/cumsum_all.png  used on input line 702.
+
+(pdftex.def)             Requested size: 469.7549pt x 354.7227pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 702--709
+[][]
+ []
+
+[15 <./artifacts/2019/cumsum_m6.png (PNG copy)>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[16 <./artifacts/2019/cumsum_all.png (PNG copy)>] [17]
+<artifacts/2019/traceplot_m1.png, id=154, 683.6742pt x 452.892pt>
+File: artifacts/2019/traceplot_m1.png Graphic file (type png)
+<use artifacts/2019/traceplot_m1.png>
+Package pdftex.def Info: artifacts/2019/traceplot_m1.png  used on input line 83
+1.
+(pdftex.def)             Requested size: 469.76405pt x 311.18971pt.
+<artifacts/2019/traceplot_m2.png, id=155, 683.6742pt x 452.892pt>
+File: artifacts/2019/traceplot_m2.png Graphic file (type png)
+<use artifacts/2019/traceplot_m2.png>
+Package pdftex.def Info: artifacts/2019/traceplot_m2.png  used on input line 84
+0.
+(pdftex.def)             Requested size: 469.76405pt x 311.18971pt.
+<artifacts/2019/traceplot_m3.png, id=156, 683.6742pt x 452.892pt>
+File: artifacts/2019/traceplot_m3.png Graphic file (type png)
+<use artifacts/2019/traceplot_m3.png>
+Package pdftex.def Info: artifacts/2019/traceplot_m3.png  used on input line 84
+9.
+(pdftex.def)             Requested size: 469.76405pt x 311.18971pt.
+<artifacts/2019/traceplot_m4.png, id=157, 683.6742pt x 452.892pt>
+File: artifacts/2019/traceplot_m4.png Graphic file (type png)
+<use artifacts/2019/traceplot_m4.png>
+Package pdftex.def Info: artifacts/2019/traceplot_m4.png  used on input line 85
+8.
+(pdftex.def)             Requested size: 469.76405pt x 311.18971pt.
+<artifacts/2019/traceplot_m5.png, id=158, 683.6742pt x 452.892pt>
+File: artifacts/2019/traceplot_m5.png Graphic file (type png)
+<use artifacts/2019/traceplot_m5.png>
+Package pdftex.def Info: artifacts/2019/traceplot_m5.png  used on input line 86
+7.
+(pdftex.def)             Requested size: 469.76405pt x 311.18971pt.
+[18pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
+ has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.889 
+       <./artifacts/2019/traceplot_m1.png (PNG copy)>] [19pdfTeX warning (ext4)
+: destination with the same identifier (name{figure.4}) has been already used, 
+duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.889 
+       <./artifacts/2019/traceplot_m2.png (PNG copy)>] [20pdfTeX warning (ext4)
+: destination with the same identifier (name{figure.5}) has been already used, 
+duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.889 
+       <./artifacts/2019/traceplot_m3.png (PNG copy)>] [21pdfTeX warning (ext4)
+: destination with the same identifier (name{figure.6}) has been already used, 
+duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.889 
+       <./artifacts/2019/traceplot_m4.png (PNG copy)>] [22pdfTeX warning (ext4)
+: destination with the same identifier (name{figure.7}) has been already used, 
+duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.889 
+       <./artifacts/2019/traceplot_m5.png (PNG copy)>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 945.
+[23]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 945.
 (./relatorio.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 910.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 910.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 945.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 945.
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14797 strings out of 481239
- 216982 string characters out of 5920377
- 525504 words of memory out of 5000000
- 29582 multiletter control sequences out of 15000+600000
- 596265 words of font info for 119 fonts, out of 8000000 for 9000
+ 15389 strings out of 481239
+ 224207 string characters out of 5920377
+ 542259 words of memory out of 5000000
+ 30132 multiletter control sequences out of 15000+600000
+ 595937 words of font info for 120 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,10n,42p,808b,467s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/d
-vips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/shar
-e/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/l
-m-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}</usr/share/texmf/f
+ 41i,9n,42p,808b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/en
+c/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/u
+sr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/
+lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}</usr/share/texmf/f
 onts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.
 pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/
 type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.pfb></
@@ -863,12 +898,12 @@ usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/type1/p
 ublic/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/shar
 e/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm
 /lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/
-fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10
-.pfb>
-Output written on relatorio.pdf (18 pages, 2931463 bytes).
+fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.
+pfb>
+Output written on relatorio.pdf (23 pages, 5990168 bytes).
 PDF statistics:
- 329 PDF objects out of 1000 (max. 8388607)
- 281 compressed objects within 3 object streams
- 88 named destinations out of 1000 (max. 500000)
- 12515 words of extra memory for PDF output out of 14400 (max. 10000000)
+ 389 PDF objects out of 1000 (max. 8388607)
+ 329 compressed objects within 4 object streams
+ 109 named destinations out of 1000 (max. 500000)
+ 12569 words of extra memory for PDF output out of 14400 (max. 10000000)
 

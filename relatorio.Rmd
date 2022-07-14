@@ -5,10 +5,14 @@ author: "Mariana de Castro Pasqualini"
 date: '2022-05-16'
 output: pdf_document
 bibliography: references.bib  
+header-includes:
+  - \usepackage[brazil]{babel}
+nocite: |
+  @*
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, fig.align = 'center')
 options(knitr.kable.NA = '')
 
 library(kableExtra)
@@ -26,7 +30,7 @@ Modelos estatísticos podem ser aplicados em diferentes áreas do conhecimento. 
 
 Para o problema de contagem do número de gols em uma partida, o modelo mais comum é baseado na distribuição de Poisson. Essa distribuição é discreta, representando o número de eventos ocorridos em um intervalo de tempo. Uma das limitações dela é que sua média $\lambda$ e variância são iguais, portanto se há uma superdispersão nos dados, o modelo pode não ser tão apropriado. Todos os modelos que serão apresentados aqui são baseados nessa distribuição e ajustados aos dados do Campeonato Brasileiro, popularmente conhecido como Brasileirão, do ano de 2019.
 
-## Modelo 1
+## 2.1 Modelo 1
 
 @baio_bayesian_2010 sugere um modelo bayesiano hierárquico para os gols marcados em uma determinada partida. No modelo proposto, o número de gols realizados segue uma distribuição Poisson condicionalmente independentes, em que a correlação é incluída por meio dos hiperparâmetros. A distribuição Poisson é vastamente utilizada para problemas de contagem e amplamente aplicada à análises esportivas como sugerem M. Dixon e S. Coles (2007) e D. Karlis e I. Ntzoufras (2003), dentre outros autores.
 
@@ -138,7 +142,9 @@ As colunas _home_team_index_ e _away_team_index_ foram criadas atribuindo um val
 
 Comparando a pontuação **acumulada** ao longo do campeonato observada e a pontuação estimada pelo modelo, tem-se o seguinte comportamento para cada time:
 
-![Pontuação acumulada - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m1.png)
+![Pontuação acumulada - Modelo 1](artifacts/2019/cumsum_m1.png)
+Santos foi time com maior pontuação atribuída pelo modelo (78 pontos), estimando bem próximo da pontuação obtida e, assim, sendo o campeão segundo o modelo. Porém, o campeão de 2019 foi o Flamengo, que ficou em segundo lugar na pontuação estimada. Para o Fluminense, o erro foi de apenas 1 ponto. Em contrapartida, há estimativas subestimadas para Corinthians e Ceará.
+
 
 ```{r}
 df <- read_rds("artifacts/2019/summary_m1.rds")
@@ -171,24 +177,9 @@ knitr::kable(
                 latex_options = "hold_position")
 ```
 
+Os efeitos de ataque e defesa são interpretados com base na referência, definida anteriormente como o último time pelo seu índice. A última equipe é o Fortaleza.
 
-```{r}
-read_rds("artifacts/pontuacao_total_m1.rds") |> 
-  rename("Time" = team_name,
-         "Pontuação observada" = score_obs, 
-         "Pontuação estimada (Modelo 1)" = score_est_m1 ) |>
-  kable(booktabs = T) |> 
-  kable_styling(position = "center", 
-                latex_options = "hold_position")
-```
-
-Santos foi time com maior pontuação atribuída pelo modelo, estimando exatamente a pontuação obtida pelo time no campeonato e, assim, sendo o campeão segundo o modelo. Porém, o campeão de 2019 foi o Flamengo e o vice-campeão o Santos.
-
-#### Diagnóstico de convergência do ajuste
-
-![Convergência - Modelo 1](artifacts/traceplot_m1.png)
-
-## Modelo 2
+## 2.2 Modelo 2
 
 Conforme dito anteriormente, a distribuição Poisson é um dos modelos mais utilizados na literatura para análises do número de gols marcados em uma partida de futebol. As variáveis-resposta são usualmente modeladas como duas Poisson independentes, considerando que o número de gols de um time não afeta o número de gols do outro time. Tal suposição não é muito razoável, considerando, por exemplo, que a força de defesa de um time interfere nas oportunidades para a marcação de gols do oponente. A partir disso, @karlis_analysis_2003 sugerem a modelagem do número de gols a partir de uma Poisson bivariada, que permite a inclusão de uma covariância positiva que faz o papel da dependência entre as duas variáveis Poisson que, marginalmente, são independentes.
 
@@ -256,52 +247,37 @@ A partir dos resultados dos histogramas obtidos na simulação, tem-se que o mod
 
 ![Simulação - Modelo 2](artifacts/sim-modelo2-27-06.png)
 
-### Diagnóstico de convergência da simulação
-
-As simulações foram realizadas com apenas 01 cadeia e 5000 interações. O gráfico traceplot mostra que a cadeia converge e consegue iterar por todo espaço paramétrico.
-
-![Traceplot - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/model1-traceplot-sim.png)
-A estatística $\hat{R}$ para os parâmetros se mostrou próxima de 1, sendo o menor $\hat{R} = 0.9995999$ e maior $\hat{R} = 1.002963$.
+Com respeito às cadeias, a estatística $\hat{R}$ para os parâmetros se mostrou próxima de 1, sendo o menor $\hat{R} = 0.9995999$ e maior $\hat{R} = 1.002963$.
 
 ### Ajuste
 
 Assim como o primeiro modelo, o modelo 2 foi ajustado para o Campeonato Brasileiro de 2019. Neste modelo, $\gamma_1=\gamma_2=0$. 
 
-![Pontuação acumulada - Modelo 2](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m2.png)
+![Pontuação acumulada - Modelo 2](artifacts/2019/cumsum_m2.png)
+Santos e Palmeiras tem curvas ótimas da pontuação acumulada no campeonato. Algumas curvas vão se afastando ao longo da competição, como nota-se o Flamengo, São Paulo e Chapecoense.
 
-```{r}
-read_rds("artifacts/2019/pontuacao_total_m2.rds") |> 
-  rename("Time" = team_name,
-         "Pontuação observada" = score_obs, 
-         "Pontuação estimada (Modelo 2)" = score_est_m2) |>
-  kable(booktabs = T) |> 
-  kable_styling(position = "center", 
-                latex_options = "hold_position")
-```
-
-O modelo 2 tem o Flamengo como maior pontuador ao longo do campeonato, acertando o vencedor. O segundo lugar ficou entre o Santos e Grêmio, segundo e quarto colocado respectivamente.
-
-Além dos campeões, os quatro últimos times são rebaixados para a segunda divisão. Nesse modelo, há um empate na pontuação final dos times Cruzeiro e Ceará e, seguindo pelo critério do maior saldo de gols, o Cruzeiro seria rebaixado juntamente com Bahia, Chapecoense e CSA. Os times rebaixados no ano foram Cruzeiro, CSA, Chapecoense e Avaí, ou seja, o modelo 2 errou apenas uma das equipes.
-
-## Modelo 3
+## 2.3 Modelo 3
 
 O modelo três é uma extensão do modelo 2, no qual $\gamma_1 = 1, \gamma_2=0$. Apenas o efeito fixo e o efeito que depende da equipe mandante são considerados no parâmetro de correlação $\lambda_3$. Não foi feita uma simulação para o modelo por limitações de memória no computador.
 
-![Pontuação acumulada - Modelo 3](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m3.png)
+![Pontuação acumulada - Modelo 3](artifacts/2019/cumsum_m3.png)
+Diferentemente dos modelos anteriores, o terceiro modelo consegue acertar o time carioca como campeão, errando apenas por 5 pontos. As piores estimativas, em geral, foram para os times que não tiveram um desempenho tão notável negativa ou positivamente.
 
-## Modelo 4
+## 2.4 Modelo 4
 
 O modelo quatro é uma extensão do segundo modelo, no qual $\gamma_1=1, \gamma_2=1$. Nesse caso, a correlação entre os gols do mandante e visitante depende do efeito fixo e dos efeitos de cada time. É a variação mais completa do modelo 2. Contudo, talvez ela fizesse mais sentido se suportasse uma covariância negativa, representando as condições reais para os dois times em campo. Também não foi realizada uma simulação pela mesma razão do modelo 3.
 
-![Pontuação acumulada - Modelo 4](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m4.png)
+![Pontuação acumulada - Modelo 4](artifacts/2019/cumsum_m4.png)
+Observa-se um indicativo de o pior modelo ser o quarto. As curvas se afastam notavelmente para vários times, como Atlético Paranaense, Avaí e São Paulo. Ainda assim, o modelo foi capaz de acertar os times que estavam no _top_ 4 do Campeonato: Santos, Palmeiras, Flamengo e Grêmio.
 
-## Modelo 5
+## 2.5 Modelo 5
 
 O modelo quatro é uma extensão do segundo modelo, que leva em consideração apenas o efeito fixo $\alpha$ e o efeito dependente do time visitante, sendo $\gamma_1=0, \gamma_2=1$. Também não foi realizada uma simulação por limitações computacionais.
 
-![Pontuação acumulada - Modelo 5](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m5.png)
+![Pontuação acumulada - Modelo 5](artifacts/2019/cumsum_m5.png)
+O quinto modelo também não parece apresentar estimativas muito boas, como para o Botafogo, Bahia e Chapecoense. É compreensível que o modelo não tenha uma performance tão interessante, uma vez que ele desconsidera o efeito do mando de casa na dependência entre o número de gols, e há uma forte percepção do efeito do time da casa ser forte nos jogos competitivos. 
 
-## Modelo 6 
+## 2.6 Modelo 6 
 
 O sexto modelo é uma extensão do modelo 1, incluindo uma mistura de 3 componentes, indicando 3 categorias das habilidades do time. A partir disso, o efeito de ataque e defesa são definidos em função do grupo que a equipe pertence.
 
@@ -341,7 +317,27 @@ Grupo 3
 
 Um time que performa mal no campeonato possivelmente apresenta uma tendência de pontuar pouco e uma propensão a conceder gols ao adversário. Esta é a motivação de usar a distribuição Normal truncada como priori para os efeitos das médias de ataque e defesa.
 
+### Diagnóstico das cadeias 
+
+Para este modelo em específico, foram usadas duas cadeias para estimação das distribuições a posteriori, o parâmetro _thin_ igual a 5, descartando tal valor de amostras, e 10000 iterações.
+
+![](artifacts/2019/traceplot_m6.png)
+
+As cadeias apresentaram problemas de convergência do parâmetro def_raw do vigésimo time. Além disso, parece haver uma correlação entre os parâmetros já próximo do fim das iterações. Portanto, o modelo foi incluído mas a inferência pode estar comprometida.
+
+### Ajuste 
+
+![Pontuação acumulada - Modelo 6](artifacts/2019/cumsum_m6.png)
+É importante considerar uma possível má especificação do modelo, por isso a análise deve ser realizada com cautela. Ele consegue estimar bem a pontuação de alguns times, por exemplo Santos, Botafogo e Chapecoense, apesar do leve afastamento em algumas rodadas da competição. Contudo, parece que as estimativas são otimistas para times que seriam considerados, popularmente, como topo da tabela, e pessimista para as equipes inferiores.
+
 # 3. Comparação dos modelos
+
+## 3.1 Erro quadrático médio
+
+Um dos principais interesses em ajustar diferentes modelos é a comparação da qualidade de ajuste de cada um, com o objetivo de escolher o mais apropriado. 
+
+![Pontuação acumulada - Todos os modelos](artifacts/2019/cumsum_all.png)
+A pontuação acumulada de todos os modelos ajustados está no gráfico acima, com o tracejado representando a pontuação observada. Observa-se que alguns modelos subestimam o desempenho de alguns times e outros são superestimados. Para auxiliar a visualização, a tabela abaixo apresenta os valores observados e estimados para cada time, além do erro quadrático médio de cada modelo.
 
 ```{r}
 df <- read_rds("artifacts/2019/pontuacao_all.rds") 
@@ -371,11 +367,34 @@ rbind(df, df2) |>
   row_spec(c(3, 7, 9, 10, 11, 15, 17, 18), bold = TRUE) 
 ```
 
+Os times em negrito são os melhores e os piores do campeonato. O modelo que chegou mais perto da pontuação do campeão Flamengo foi o modelo 3, que considera na correlação o efeito fixo e o do time mandante, enquanto as piores estimativas ficaram o segundo e o modelo de mistura.  
+
+## 3.2 Validação cruzada
 
 Medidas de qualidade relativa dos modelos são fundamentais para seleção de modelos e avaliação da acurácia preditiva dos modelos. 
 
-![Pontuação acumulada - Todos os modelos](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_all.png)
-Como o cálculo do LOO-CV é feito baseado na log-verossimilhança de cada observação, algumas delas podem ser muito influentes. Isso é especialmente sensível quando temos distribuições com caudas longas. Para isso, é calculado o PSIS.
+@vehtari_practical_2015 propõe o cálculo do LOO-CV, que é feito baseado na esperança da densidadade preditiva do modelo.
+
+- $elpd_{loo} = \sum_{i=1}^n \log p(y_i | y_{-i})$, onde $p(y_i|y_{-i}) = \int p(y_i | \theta) p(\theta|y_{-i}d\theta)$ é a densidade preditiva
+
+- $LOO_{ic} = -2 \times elpd_{loo}$
+
+- Quanto menor, melhor
+
+Os valores obtidos para todos os modelos estão a seguir:
+
+```{r}
+read_rds("artifacts/2019/loo_compare_all_models.rds") |> 
+  as_tibble(rownames = "model") |> 
+  select(model, elpd_diff, se_diff, looic, se_looic) |> 
+  mutate_if(is.numeric, round, 3) |> 
+  kable(format = "latex", 
+        booktabs = TRUE) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position") 
+```
+
+A coluna looic indica o valor obtido para cada modelo. Já a coluna elpd_diff é a diferença entre os modelos, sendo o primeiro o modelo com o menor LOO, representando a diferença do melhor modelo e ele mesmo, assim em diante. É importante ressaltar novamente que, apesar da inclusão do modelo 6, como suas cadeias de Markov não estão adequadas, a inferência do modelo está comprometida. 
 
 # 4. Outros modelos
 
@@ -383,35 +402,30 @@ Um possível problema com modelos hierárquicos é um efeito de encolhimento, no
 
 Uma outra possibilidade de mistura é um modelo inflado de zeros.
 
-#5. Conclusão
-
-# Exemplo Tabela
-## R Markdown
-
-```{r}
-data_frame(
-   parameter = c(
-    "$\\lambda_1$ (old normal)",
-    "$N$ (total days)",
-    "$d_2$ (time to new normal)"
-  ),
-  value = c(
-    300, 400, 12
-  )
-) %>%
-  kable(
-    escape = FALSE, booktabs = TRUE,
-    caption = "Simulation parameters"
-  ) %>%
-  # extra formatting with kableExtra:
-  kable_styling(latex_options = "hold_position") #%>%
-  #group_rows(index = c("Rates (unknown)" = 3,
-  #                     "Other parameters" = 5))
-```
-
+# 5. Conclusão
 # 6. Referências
 # 7. Apêndice
 
-1. Traceplot para diagnóstico das cadeias 
+### 1. Traceplot para diagnóstico das cadeias
 
+Abaixo, os _traceplots_ dos modelos ajustados com os dados do Campeonato Brasileiro. Como o número de parâmetros é muito grande, apenas alguns foram selecionados.
 
+#### 1.1 Modelo 1 
+
+![Convergência - Modelo 1](artifacts/2019/traceplot_m1.png)
+
+#### 1.2 Modelo 2 
+
+![Convergência - Modelo 2](artifacts/2019/traceplot_m2.png)
+
+#### 1.3 Modelo 3 
+
+![Convergência - Modelo 3](artifacts/2019/traceplot_m3.png)
+
+#### 1.4 Modelo 4
+
+![Convergência - Modelo 4](artifacts/2019/traceplot_m4.png)
+
+#### 1.5 Modelo 5 
+
+![Convergência - Modelo 5](artifacts/2019/traceplot_m5.png)

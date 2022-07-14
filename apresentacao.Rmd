@@ -19,6 +19,7 @@ header-includes:
     - \usepackage{threeparttable}
     - \setbeamerfont{caption}{size=\tiny}
     - \setbeamerfont{caption name}{size=\tiny}
+    - \usepackage[brazil]{babel}
 ---
 
 ```{r setup, include=FALSE}
