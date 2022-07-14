@@ -50,3 +50,12 @@ se <- function(actual, predicted) {
   se <- (actual - predicted)^2
   return(se)
 }
+
+summarize_draws_param <- function(fit, params) {
+  summary_tibble <- fit |> 
+    as_draws() |> 
+    subset_draws(variable = params) |> 
+    summarize_draws()
+  
+  return(summary_tibble)
+}

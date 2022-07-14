@@ -9,10 +9,13 @@ bibliography: references.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+options(knitr.kable.NA = '')
 
 library(kableExtra)
 library(knitr)
 library(tidyverse)
+
+source("src/wrangling_functions.R")
 ```
 
 # 1. Introdução 
@@ -137,6 +140,37 @@ Comparando a pontuação **acumulada** ao longo do campeonato observada e a pont
 
 ![Pontuação acumulada - Modelo 1](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m1.png)
 
+```{r}
+df <- read_rds("artifacts/2019/summary_m1.rds")
+map_teams <- read_rds("artifacts/2019/index_teams.rds")
+df <- cbind(df, map_teams) 
+
+df <- df |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95)
+
+knitr::kable(
+  df[1:20,],
+  digits = 3,
+  caption = 'Efeito de ataque de cada time, estimado pelo Modelo 1 ',
+  booktabs = TRUE) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position")
+
+knitr::kable(
+  df[21:40,],
+  digits = 3,
+  caption = 'Efeito de defesa de cada time, estimado pelo Modelo 1 ',
+  booktabs = TRUE) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position")
+```
+
 
 ```{r}
 read_rds("artifacts/pontuacao_total_m1.rds") |> 
@@ -196,7 +230,7 @@ $$
 def_T = 0
 $$
 
-### Priori
+## Priori
 
 A escolha das distribuições a priori deste modelo segue o mesmo princípio do modelo 1: prioris pouco informativas.
 
@@ -236,7 +270,7 @@ Assim como o primeiro modelo, o modelo 2 foi ajustado para o Campeonato Brasilei
 ![Pontuação acumulada - Modelo 2](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m2.png)
 
 ```{r}
-read_rds("artifacts/pontuacao_total_m2.rds") |> 
+read_rds("artifacts/2019/pontuacao_total_m2.rds") |> 
   rename("Time" = team_name,
          "Pontuação observada" = score_obs, 
          "Pontuação estimada (Modelo 2)" = score_est_m2) |>
@@ -267,7 +301,76 @@ O modelo quatro é uma extensão do segundo modelo, que leva em consideração a
 
 ![Pontuação acumulada - Modelo 5](/home/mariana/Documents/pessoal/monografia/soccer-models/artifacts/cumsum_m5.png)
 
+## Modelo 6 
+
+O sexto modelo é uma extensão do modelo 1, incluindo uma mistura de 3 componentes, indicando 3 categorias das habilidades do time. A partir disso, o efeito de ataque e defesa são definidos em função do grupo que a equipe pertence.
+
+Neste modelo, o ataque e defesa seguem uma distribuição t com 4 graus de liberdade, **ponderados** pela probababilidade do time pertencer a um dos três grupos: (1) final da tabela, (2) meio da tabela e (3) topo da tabela (@baio_bayesian_2010).
+
+$$
+att_t = \sum_{k=1}^3 \pi^{att}_{kt} \times t(\mu^{att}_k, \tau^{att}_k, \nu)
+$$
+$$
+def_t = \sum_{k=1}^3 \pi^{def}_{kt} \times t(\mu^{def}_k, \tau^{def}_k, \nu)
+$$
+
+## Priori
+
+Novamente, define-se distribuições a priori para os parâmetros e hiperparâmetros do modelo. A probabilidade de pertencer ao grupo 1, 2 ou 3 é igual para todos os times, então define-se
+
+- $\pi_{att} \sim Dirichlet([1, 1, 1])$ 
+- $\pi_{def} \sim Dirichlet([1, 1, 1])$
+
+Como é uma extensão do modelo 1, o efeito fixo de jogar em casa se mantém com a mesma priori $home \sim Normal(0, 10)$. 
+Independentemente do grupo que o ataque e a defesa pertencem,  $\sigma_{att} \sim Cauchy(0, 2.5)$ e $\sigma_{def} \sim Cauchy(0, 2.5)$. As médias dos grupos que vão variar de acordo com qual _cluster_ o efeito vêm:
+
+Grupo 1 
+
+- $\mu_1^{att} \sim trunc Normal(0, 10, -3, 0)$
+- $\mu_1^{def} \sim trunc Normal(0, 10, 0, 3)$
+
+Grupo 2 
+
+- $\mu_2^{att} \sim trunc Normal(0, 0.01)$
+- $\mu_2^{def} \sim trunc Normal(0, 0.01)$
+
+Grupo 3 
+
+- $\mu_3^{att} \sim trunc Normal(0, 10, 0, 3)$
+- $\mu_3^{def} \sim trunc Normal (0, 10, -3, 0)$
+
+Um time que performa mal no campeonato possivelmente apresenta uma tendência de pontuar pouco e uma propensão a conceder gols ao adversário. Esta é a motivação de usar a distribuição Normal truncada como priori para os efeitos das médias de ataque e defesa.
+
 # 3. Comparação dos modelos
+
+```{r}
+df <- read_rds("artifacts/2019/pontuacao_all.rds") 
+df <- df |>
+  rename("Time" = team_name,
+         "Real" = score_obs,
+         "M1" = score_est_m1, 
+         "M2" = score_est_m2,
+         "M3" = score_est_m3,
+         "M4" = score_est_m4,
+         "M5" = score_est_m5,
+         "M6" = score_est_m6)
+
+df2 <- df |> 
+  select(starts_with("M")) |> 
+  map_df(mse, actual = df$Real) |> 
+  mutate(Time = NA, Real = NA) |> 
+  mutate_if(is.numeric, round, 1)
+
+df <- df |> 
+  mutate_if(is.numeric, as.character)
+
+rbind(df, df2) |> 
+  kable(booktabs = T, digits = 1) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position") |> 
+  row_spec(c(3, 7, 9, 10, 11, 15, 17, 18), bold = TRUE) 
+```
+
 
 Medidas de qualidade relativa dos modelos são fundamentais para seleção de modelos e avaliação da acurácia preditiva dos modelos. 
 

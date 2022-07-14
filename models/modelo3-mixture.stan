@@ -55,20 +55,21 @@ model {
   vector[G] m_y2;
   
   home ~ normal(0, 10);
-  mu_att_raw1 ~ cauchy(0, 2.5) T[-3,0] ;
+  mu_att_raw1 ~ normal(0, 10) T[-3,0] ;
   mu_att_raw2 ~ normal(0, 0.01);
-  mu_att_raw3 ~ cauchy(0, 2.5)T[0,3] ;
-  mu_def_raw1 ~ cauchy(0, 2.5)T[0,3] ;
+  mu_att_raw3 ~ normal(0, 10) T[0,3];
+  mu_def_raw1 ~ normal(0, 10) T[0,3];
   mu_def_raw2 ~ normal(0, 0.01);
-  mu_def_raw3 ~ cauchy(0, 2.5)T[-3,0] ;
-  sigma_att ~ cauchy(0, 2.5);
-  sigma_def ~ cauchy(0, 2.5);
+  mu_def_raw3 ~ normal(0, 10) T[-3,0];
 
   for (t in 1:T) {
     pi_att[t] ~ dirichlet(rep_vector(1, C));
     pi_def[t] ~ dirichlet(rep_vector(1, C));
     
     for(c in 1:C) {
+      sigma_att[c] ~ cauchy(0, 2.5);
+      sigma_def[c] ~ cauchy(0, 2.5);
+      
       m_att[c] = log(pi_att[t, c]) + student_t_lpdf(att[t] | 4, mu_att[c], sigma_att[c]);
       m_def[c] = log(pi_def[t, c]) + student_t_lpdf(def[t] | 4, mu_def[c], sigma_def[c]);
     }

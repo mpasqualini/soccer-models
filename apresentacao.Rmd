@@ -5,13 +5,31 @@ author: "Mariana de Castro Pasqualini"
 date: '2022-07-11'
 output: beamer_presentation
 bibliography: references.bib 
+header-includes:
+  header-includes:
+    - \usepackage{booktabs}
+    - \usepackage{longtable}
+    - \usepackage{array}
+    - \usepackage{multirow}
+    - \usepackage{wrapfig}
+    - \usepackage{float}
+    - \usepackage{colortbl}
+    - \usepackage{pdflscape}
+    - \usepackage{tabu}
+    - \usepackage{threeparttable}
+    - \setbeamerfont{caption}{size=\tiny}
+    - \setbeamerfont{caption name}{size=\tiny}
 ---
 
 ```{r setup, include=FALSE}
 library(kableExtra)
 library(knitr)
+library(readr)
+library(tidyverse)
 
 opts_chunk$set(echo = FALSE)
+options(knitr.kable.NA = '')
+source("src/wrangling_functions.R")
 ```
 
 ## Introdução
@@ -20,9 +38,9 @@ Desde a década de 80, modelos estatísticos são aplicados em problemas relacio
 
 ## Introdução 
 
-A distribuição de Poisson é uma das mais utilizadas para esse tipo de problema. Serão apresentados 5 modelos propostos na literatura para prever o número de gols nas partidas do Campeonato Brasileiro dos anos 2019, 2020 e 2021.
+A distribuição de Poisson é uma das mais utilizadas para esse tipo de problema. Serão apresentados 5 modelos propostos na literatura para prever o número de gols nas partidas do Campeonato Brasileiro dos anos 2019.
 
-Os modelos foram implementados no Stan, um software para amostrar modelos bayesianos. O RStan foi utilizado como interface entre o Stan e o R. 
+Os modelos foram implementados no Stan, um software para amostrar modelos bayesianos, juntamente com o R.
 
 ## Modelo 1 
 
@@ -82,18 +100,62 @@ Uma única cadeia de Markov foi utilizada para obter as amostras da distribuiç�
 
 ![](artifacts/model1-traceplot-sim.png)
 
-## Ajuste 
+## Dados 
 
 Os dados do Campeonato Brasileiro foram disponibilizados por Gomide e Gualberto no repositório **caRtola**, disponível no Github. O formato dos dados é o seguinte:
 
 ![](table.png)
 
-## Ajuste: 2019
+No ano de 2019, o topo da tabela foi formado, respectivamente, por:
+
+- Flamengo, Santos, Palmeiras e Grêmio 
+
+Já os times rebaixados foram:
+
+- Cruzeiro, CSA, Chapecoense e Avaí
+
+## Ajuste
 ![](artifacts/2019/cumsum_m1.png)
+
+## Ajuste 
+
+- Referência: Fortaleza
+
+```{r}
+df <- read_rds("artifacts/2019/summary_m1.rds")
+map_teams <- read_rds("artifacts/2019/index_teams.rds")
+df <- cbind(df, map_teams) 
+
+df[1:20, ] |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |> 
+  filter(Time %in% c("Flamengo", "Palmeiras", "CSA", "Ceará", "Fluminense", "")) |> 
+kable(digits = 3, booktabs = T) |> 
+  kable_styling(font_size = 9)
+
+
+df[21:40, ] |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |> 
+  filter(Time %in% c("Flamengo", "Palmeiras", "CSA", "Ceará", "Fluminense")) |> 
+  kable(booktabs = T, digits = 3) |> 
+  kable_styling(font_size = 9)
+```
+
 
 ## Modelo 2 
 
-Karlis e Ntzoufras (2003) propõe um modelo baseado na distribuição de Poisson bivariada, em que são definidas três variáveis aleatórias latentes $X_1, X_2, X_3$ que seguem, independentemente, uma Poisson com parâmetros $\lambda_1, \lambda_2, \lambda_3$. 
+@karlis_analysis_2003 propõe um modelo baseado na distribuição de Poisson bivariada, em que são definidas três variáveis aleatórias latentes $X_1, X_2, X_3$ que seguem, independentemente, uma Poisson com parâmetros $\lambda_1, \lambda_2, \lambda_3$. 
 
 Então, as variáveis aleatórias $X = X_1 + X_3$ e $Y = X_2 + X_3$ seguem conjuntamente uma distribuição de Poisson bivariada. Marginalmente, $E(X) = \lambda_1 + \lambda_3$ e $E(Y) = \lambda_2 + \lambda_3$. Ainda, $cov(X, Y) = \lambda_3$ e então tem-se uma medida de interdependência entre as variáveis aleatórias. 
 
@@ -118,13 +180,13 @@ $$
 $$
 \log(\lambda_{3i}) = \alpha + \gamma_1\alpha_{h_i}^{home} + \gamma_2\alpha_{g_i}^{away}
 $$
-no qual as variáveis _dummy_ $\gamma_1$ e $\gamma_2$ são indicadoras de quais efeitos queremos incluir na correlação entre o número de gols do time mandante e visitante.
+no qual as variáveis _dummy_ $\gamma_1$ e $\gamma_2$ indicam quais efeitos queremos incluir na correlação entre o número de gols do time mandante e visitante.
 
 ## Modelo 2
 
 Para o modelo 2 que estamos considerando, $\gamma_1 = \gamma_2 = 0$. Ou seja, o parâmetro de correlação $\lambda_{3i}$ depende apenas de um efeito fixo, $\alpha$.
 
-Originalmente, o artigo considera que o efeito de ataque e defesa para cada time é **fixo**, fazendo com que o modelo tenha um número muito grande de parâmetros. Por isso, o modelo proposto foi adaptado e ataque e defesa foram tratados como efeitos aleatórios, além da definição de prioris para os parâmetros.
+Originalmente, o artigo considera que o efeito de ataque e defesa para cada time é **fixo**, fazendo com que o modelo tenha um número muito grande de parâmetros. Por isso, o modelo proposto foi adaptado e ataque e defesa foram tratados como efeitos aleatórios, além da inclusão prioris para os parâmetros.
 
 ## Priori
 
@@ -147,40 +209,202 @@ Uma simulação para o modelo 2 foi feita com 1000 banco de dados de tamanho 380
 
 ![](artifacts/sim-modelo2-27-06.png)
 
-## Ajuste: 2019
+## Ajuste
 ![](artifacts/2019/cumsum_m2.png)
+
+## Ajuste
+
+```{r}
+df <- read_rds("artifacts/2019/summary_m2.rds")
+map_teams <- read_rds("artifacts/2019/index_teams.rds")
+df <- cbind(df, map_teams) 
+
+df[1:20, ] |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |> 
+  filter(Time %in% c("Flamengo", "Palmeiras", "CSA", "Ceará", "Fluminense", "")) |> 
+kable(digits = 3, booktabs = T) |> 
+  kable_styling(font_size = 9)
+
+
+df[21:40, ] |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |> 
+  filter(Time %in% c("Flamengo", "Palmeiras", "CSA", "Ceará", "Fluminense")) |> 
+  kable(booktabs = T, digits = 3) |> 
+  kable_styling(font_size = 9)
+```
+
+## Ajuste 
+
+![](artifacts/2019/traceplot_m2.png)
 
 ## Modelo 3 
 
 Baseado na definição do modelo 2, o modelo 3 é definido com $\gamma_1 = 1, \gamma_2 = 0$, com parâmetro de correlação $\lambda_{3i}$ sendo a soma do efeito **fixo** $\alpha$ mais um efeito que depende do time **mandante**.
 
-## Ajuste: 2019
+## Modelo 3
+
+![](artifacts/2019/traceplot_m3.png)
+
+## Ajuste
 ![](artifacts/2019/cumsum_m3.png) 
 
 ## Modelo 4
 
 O modelo 4 inclui todos os efeitos na correlação: o efeito **fixo** $\alpha$, um efeito que depende do time da **casa** e também um efeito para o time **visitante**. Assim, $\gamma_1 = 1, \gamma_2 = 1$. 
 
-## Ajuste: 2019
+## Ajuste
 ![](artifacts/2019/cumsum_m4.png)  
 
 ## Modelo 5
 
 Já o modelo 5 inclui apenas o efeito fixo e o efeito do time **visitante**, definido com $\gamma_1 = 0, \gamma_2 = 1$.
 
-## Ajuste: 2019
+## Ajuste
 ![](artifacts/2019/cumsum_m5.png)
+
+## Ajuste 
+
+```{r}
+df <- read_rds("artifacts/2019/summary_m5.rds")
+map_teams <- read_rds("artifacts/2019/index_teams.rds")
+df <- cbind(df, map_teams) 
+
+df[1:20, ] |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |> 
+  filter(Time %in% c("Flamengo", "Palmeiras", "CSA", "Ceará", "Fluminense", "")) |> 
+kable(digits = 3, booktabs = T) |> 
+  kable_styling(font_size = 9)
+
+
+df[21:40, ] |> 
+  select(home_team_name, mean, median, sd, q5, q95) |> 
+  rename("Time" = home_team_name,
+         "Média" = mean,
+         "Mediana" = median, 
+         "Desvio-padrão" = sd,
+         "5%" = q5,
+         "95%" = q95) |> 
+  filter(Time %in% c("Flamengo", "Palmeiras", "CSA", "Ceará", "Fluminense")) |> 
+  kable(booktabs = T, digits = 3) |> 
+  kable_styling(font_size = 9)
+```
+
+
 ## Modelo 6 
 
-O modelo de mistura apresentado por @baio_bayesian_2010 permite contornar o problema de encolhimento
+O sexto modelo é uma extensão do modelo 1, incluindo uma mistura de 3 componentes, representando categorias das habilidades do time. A partir disso, o efeito de ataque e defesa são definidos em função do grupo que a equipe pertence.
 
-## Comparação 
+O ataque e defesa seguem uma distribuição t-Student com 4 graus de liberdade, **ponderados** pela probababilidade do time pertencer a um dos três grupos: (1) final da tabela, (2) meio da tabela e (3) topo da tabela [@baio_bayesian_2010].
 
-- Medidas de qualidade relativa do modelo 
+$$
+att_t = \sum_{k=1}^3 \pi^{att}_{kt} \times t(\mu^{att}_k, \tau^{att}_k, \nu)
+$$
+$$
+def_t = \sum_{k=1}^3 \pi^{def}_{kt} \times t(\mu^{def}_k, \tau^{def}_k, \nu)
+$$
 
-## Outros modelos 
+## Priori
+
+- $\pi_{att} \sim Dirichlet([1, 1, 1])$ e $\pi_{def} \sim Dirichlet([1, 1, 1])$
+- $home \sim Normal(0, 10)$
+- Para todos os grupos, $\sigma_{att} \sim Cauchy(0, 2.5)$ e $\sigma_{def} \sim Cauchy(0, 2.5)$
+
+Grupo 1 
+
+- $\mu_1^{att} \sim trunc Normal(0, 10, -3, 0)$
+- $\mu_1^{def} \sim trunc Normal(0, 10, 0, 3)$
+
+Grupo 2 
+
+- $\mu_2^{att} \sim trunc Normal(0, 0.01)$
+- $\mu_2^{def} \sim trunc Normal(0, 0.01)$
+
+Grupo 3 
+
+- $\mu_3^{att} \sim trunc Normal(0, 10, 0, 3)$
+- $\mu_3^{def} \sim trunc Normal (0, 10, -3, 0)$
+
+## Modelo 6
+
+As cadeias apresentaram problemas e foram ajustadas com parâmetros diferentes: 2 cadeias, thin = 5 e 10000 iterações.
+
+![](artifacts/2019/traceplot_m6.png)
+
+## Ajuste
+![](artifacts/2019/cumsum_m6.png)
+
+## Comparação: EQM
+
+```{r}
+df <- read_rds("artifacts/2019/pontuacao_all.rds") 
+df <- df |>
+  rename("Time" = team_name,
+         "Real" = score_obs,
+         "M1" = score_est_m1, 
+         "M2" = score_est_m2,
+         "M3" = score_est_m3,
+         "M4" = score_est_m4,
+         "M5" = score_est_m5,
+         "M6" = score_est_m6)
+
+df2 <- df |> 
+  select(starts_with("M")) |> 
+  map_df(mse, actual = df$Real) |> 
+  mutate(Time = NA, Real = NA) |> 
+  mutate_if(is.numeric, round, 1)
+
+df <- df |> 
+  mutate_if(is.numeric, as.character)
+
+rbind(df, df2) |> 
+  kable(booktabs = T, digits = 1) |> 
+  kable_styling(position = "center", 
+                latex_options = "hold_position", 
+                font_size = 7) |>
+  row_spec(c(3, 7, 9, 10, 11, 15, 17, 18), bold = TRUE) 
+```
+
+
+## Comparação: LOO-CV
+
+- $elpd_{loo} = \sum_{i=1}^n \log p(y_i | y_{-i})$, onde $p(y_i|y_{-i}) = \int p(y_i | \theta) p(\theta|y_{-i}d\theta)$ é a densidade preditiva [@vehtari_practical_2015]
+
+- $LOO_{ic} = -2 \times elpd_{loo}$
+
+- Quanto menor, melhor
+
+```{r}
+read_rds("artifacts/2019/loo_compare_all_models.rds") |> 
+  as_tibble(rownames = "model") |> 
+  select(model, elpd_diff, se_diff, looic, se_looic) |> 
+  mutate_if(is.numeric, round, 3) |> 
+  kable(format = "latex", booktabs = TRUE)
+```
+
+## Considerações 
 
 - Binomial negativa, para os casos de superdispersão
-- Poisson inflada de zeros
+- @benz_estimating_2020 analisa o efeito de jogar em casa durante a pandemia
+- Campeonatos de outros anos
+- Limitações dos modelos baseados na Poisson bivariada
+- Melhoria e correção do modelo de mistura
 
 ## Referências

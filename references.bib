@@ -129,3 +129,35 @@ url={https://marcoinacio.com/stan}
 	author = {McElreath, Richard},
 	year = {2020},
 }
+
+@article{benz_estimating_2020,
+	title = {Estimating the change in soccer's home advantage during the {Covid}-19 pandemic using bivariate {Poisson} regression},
+	copyright = {arXiv.org perpetual, non-exclusive license},
+	url = {https://arxiv.org/abs/2012.14949},
+	doi = {10.48550/ARXIV.2012.14949},
+	abstract = {In wake of the Covid-19 pandemic, 2019-2020 soccer seasons across the world were postponed and eventually made up during the summer months of 2020. Researchers from a variety of disciplines jumped at the opportunity to compare the rescheduled games, played in front of empty stadia, to previous games, played in front of fans. To date, most of this post-Covid soccer research has used linear regression models, or versions thereof, to estimate potential changes to the home advantage. But because soccer outcomes are non-linear, we argue that leveraging the Poisson distribution would be more appropriate. We begin by using simulations to show that bivariate Poisson regression reduces absolute bias when estimating the home advantage benefit in a single season of soccer games, relative to linear regression, by almost 85 percent. Next, with data from 17 professional soccer leagues, we extend bivariate Poisson models estimate the change in home advantage due to games being played without fans. In contrast to current research that overwhelmingly suggests a drop in the home advantage, our findings are mixed; in some leagues, evidence points to a decrease, while in others, the home advantage may have risen. Altogether, this suggests a more complex causal mechanism for the impact of fans on sporting events.},
+	urldate = {2022-07-13},
+	author = {Benz, Luke S. e Lopez, Michael J.},
+	year = {2020},
+	keywords = {Applications (stat.AP), FOS: Computer and information sciences, FOS: Computer and information sciences},
+}
+
+@Misc{stan2022,
+    title = {Stan Modeling Language Users Guide and Reference Manual, Version 2.21.0},
+    author = {{Stan Development Team}},
+    year = {2022},
+    url = {http://mc-stan.org/},
+}
+
+
+@article{vehtari_practical_2015,
+	title = {Practical {Bayesian} model evaluation using leave-one-out cross-validation and {WAIC}},
+	copyright = {arXiv.org perpetual, non-exclusive license},
+	url = {https://arxiv.org/abs/1507.04544},
+	doi = {10.48550/ARXIV.1507.04544},
+	abstract = {Leave-one-out cross-validation (LOO) and the widely applicable information criterion (WAIC) are methods for estimating pointwise out-of-sample prediction accuracy from a fitted Bayesian model using the log-likelihood evaluated at the posterior simulations of the parameter values. LOO and WAIC have various advantages over simpler estimates of predictive error such as AIC and DIC but are less used in practice because they involve additional computational steps. Here we lay out fast and stable computations for LOO and WAIC that can be performed using existing simulation draws. We introduce an efficient computation of LOO using Pareto-smoothed importance sampling (PSIS), a new procedure for regularizing importance weights. Although WAIC is asymptotically equal to LOO, we demonstrate that PSIS-LOO is more robust in the finite case with weak priors or influential observations. As a byproduct of our calculations, we also obtain approximate standard errors for estimated predictive errors and for comparing of predictive errors between two models. We implement the computations in an R package called 'loo' and demonstrate using models fit with the Bayesian inference package Stan.},
+	urldate = {2022-07-14},
+	author = {Vehtari, Aki e Gelman, Andrew e Gabry, Jonah},
+	year = {2015},
+	keywords = {Computation (stat.CO), Methodology (stat.ME), FOS: Computer and information sciences, FOS: Computer and information sciences},
+}
